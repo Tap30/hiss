@@ -166,7 +166,7 @@ and `hashedContent` will be `#$$#{hmac-sha256:default_key}{29l4zNu+i23nf2s3td+bW
 by which Hiss will know which fields should be encrypted/decrypted.
 
 Only `String` fields can be annotated with `@Encrypted`;
-for other (non-primitive) types use [`@EnryptedInside`](#encprytedinside-annotation).
+for other (non-primitive) types use [`@EncryptedInside`](#encryptedinside-annotation).
 
 `@Encrypted` parameters are:
 - `pattern`: the pattern which only matched content will be encrypted;
