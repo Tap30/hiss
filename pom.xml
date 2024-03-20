@@ -44,6 +44,14 @@
         </dependency>
     </dependencies>
 
+    <distributionManagement>
+        <repository>
+            <id>github</id>
+            <name>GitHub Packages</name>
+            <url>https://maven.pkg.github.com/Tap30/hiss</url>
+        </repository>
+    </distributionManagement>
+
     <build>
         <plugins>
             <plugin>
