@@ -6,7 +6,7 @@ domain objects easier while support key rotation and even algorithm change.
 Key Features:
 - Key rotation and algorithm change by storing key ID and algorithm name alongside encrypted content.
 - Supporting multiple algorithms.
-- Supports encrypted and not encrypted data during decryption.
+- Supports encrypted and plain data during decryption.
 - Spring Boot and Spring Data Mongo integration support.
 
 ## Quick Start
