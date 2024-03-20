@@ -1,4 +1,4 @@
-# Hiss
+# Hiss [![build status](https://github.com/Tap30/hiss/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/Tap30/hiss/actions/workflows/build.yml)
 
 Hiss is an encryption and hashing library which aims to make encrypting
 domain objects easier while support key rotation and even algorithm change.
