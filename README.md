@@ -210,3 +210,4 @@ no-salt hashing is required.
 Hiss supports keyed hash functionality; currently `hmac-sha256` is only supported.
 
 Hashed content format is like encrypted content.
+
