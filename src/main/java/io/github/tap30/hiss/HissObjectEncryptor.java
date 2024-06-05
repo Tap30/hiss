@@ -1,9 +1,9 @@
-package tech.tapsi.libs.hiss;
+package io.github.tap30.hiss;
 
 import lombok.Value;
 import org.intellij.lang.annotations.Language;
-import tech.tapsi.libs.hiss.utils.ReflectionUtils;
-import tech.tapsi.libs.hiss.utils.StringUtils;
+import io.github.tap30.hiss.utils.ReflectionUtils;
+import io.github.tap30.hiss.utils.StringUtils;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;

@@ -1,8 +1,8 @@
-package tech.tapsi.libs.hiss;
+package io.github.tap30.hiss;
 
+import io.github.tap30.hiss.utils.EncryptionUtils;
 import org.intellij.lang.annotations.Language;
 import org.jetbrains.annotations.Nullable;
-import tech.tapsi.libs.hiss.utils.EncryptionUtils;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;

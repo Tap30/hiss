@@ -1,4 +1,4 @@
-package tech.tapsi.libs.hiss;
+package io.github.tap30.hiss;
 
 import org.intellij.lang.annotations.Identifier;
 import org.intellij.lang.annotations.Language;

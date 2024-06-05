@@ -1,4 +1,4 @@
-package tech.tapsi.libs.hiss;
+package io.github.tap30.hiss;
 
 public interface HissPropertiesProvider {
     HissProperties getProperties();

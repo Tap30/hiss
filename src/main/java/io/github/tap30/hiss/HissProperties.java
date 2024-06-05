@@ -1,8 +1,8 @@
-package tech.tapsi.libs.hiss;
+package io.github.tap30.hiss;
 
+import io.github.tap30.hiss.utils.KeyUtils;
+import io.github.tap30.hiss.utils.StringUtils;
 import lombok.Value;
-import tech.tapsi.libs.hiss.utils.KeyUtils;
-import tech.tapsi.libs.hiss.utils.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Map;

@@ -1,11 +1,8 @@
-package tech.tapsi.libs.hiss;
+package io.github.tap30.hiss;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 

@@ -1,4 +1,4 @@
-package tech.tapsi.libs.hiss.utils;
+package io.github.tap30.hiss.utils;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;

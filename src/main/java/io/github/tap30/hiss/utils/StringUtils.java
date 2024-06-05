@@ -1,4 +1,4 @@
-package tech.tapsi.libs.hiss.utils;
+package io.github.tap30.hiss.utils;
 
 public class StringUtils {
 

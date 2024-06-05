@@ -16,7 +16,7 @@ Key Features:
 Apache Maven:
 ```xml
 <dependency>
-    <groupId>tech.tapsi.libs.hiss</groupId>
+    <groupId>io.github.tap30</groupId>
     <artifactId>hiss</artifactId>
     <version>0.11.1</version>
 </dependency>
@@ -24,12 +24,12 @@ Apache Maven:
 
 Gradle (Groovy):
 ```groovy
-implementation 'tech.tapsi.libs.hiss:hiss:0.11.1'
+implementation 'io.github.tap30:hiss:0.11.1'
 ```
 
 Gradle (Kotlin):
 ```kotlin
-implementation("tech.tapsi.libs.hiss:hiss:0.11.1")
+implementation("io.github.tap30:hiss:0.11.1")
 ```
 
 ### 2. Create Hiss instance via `HissFactory`
@@ -47,8 +47,8 @@ var hiss = HissFactory.createHiss(() -> HissProperties.fromBase64EncodedKeys(
 ### 3. Annotate your class with `@Encrypted`
 
 ```java
-import tech.tapsi.libs.hiss.Encrypted;
-import tech.tapsi.libs.hiss.EncryptedInside;
+import io.github.tap30.hiss.Encrypted;
+import io.github.tap30.hiss.EncryptedInside;
 
 public class User {
     @Encrypted
@@ -145,14 +145,14 @@ With Hiss it is possible to encrypt only some parts of an string.
 As an example having:
 
 ```java
-import tech.tapsi.libs.hiss.Encrypted;
+import io.github.tap30.hiss.Encrypted;
 
 public class Message {
-    
+
     @Encrypted(pattern = "\\d+")
     private String content = "Your code is 123456";
     private String hashedContent;
-    
+
     // getters and setter
 }
 ```
