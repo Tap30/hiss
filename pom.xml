@@ -14,6 +14,11 @@
             <name>Mostafa Kazemi</name>
             <email>mkay1375@gmail.com</email>
         </developer>
+        <developer>
+            <id>airavanimanesh</id>
+            <name>Amirhossein Iravanimanesh</name>
+            <email>airavanimanesh@gmail.com</email>
+        </developer>
     </developers>
     <licenses>
         <license>
