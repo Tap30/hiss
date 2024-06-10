@@ -22,6 +22,7 @@ Apache Maven:
 </dependency>
 ```
 
+
 Gradle (Groovy):
 ```groovy
 implementation 'io.github.tap30:hiss:0.11.1'
