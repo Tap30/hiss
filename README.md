@@ -83,7 +83,7 @@ in `hashedX` (in this case `hashedPhoneNumber`).
 ## Hiss and Spring Boot
 
 Hiss integration with Spring Boot is available;
-see [this](https://github.com/Tap30/hiss-spring-boot-starter).
+see [this](https://github.com/Tap30/hiss-spring-boot-mongo-starter).
 
 ## Hiss Instantiation
 
