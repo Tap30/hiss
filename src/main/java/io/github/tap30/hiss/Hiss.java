@@ -1,5 +1,6 @@
 package io.github.tap30.hiss;
 
+import io.github.tap30.hiss.properties.HissProperties;
 import io.github.tap30.hiss.utils.EncryptionUtils;
 import org.intellij.lang.annotations.Language;
 import org.jetbrains.annotations.Nullable;

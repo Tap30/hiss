@@ -1,5 +1,6 @@
 package io.github.tap30.hiss;
 
+import io.github.tap30.hiss.properties.HissPropertiesFromEnvProvider;
 import org.junit.jupiter.api.BeforeEach;
 
 import java.util.Map;

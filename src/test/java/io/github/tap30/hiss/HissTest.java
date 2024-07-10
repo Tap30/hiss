@@ -1,5 +1,6 @@
 package io.github.tap30.hiss;
 
+import io.github.tap30.hiss.properties.HissProperties;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

@@ -1,4 +1,4 @@
-package io.github.tap30.hiss;
+package io.github.tap30.hiss.properties;
 
 import io.github.tap30.hiss.utils.KeyUtils;
 import io.github.tap30.hiss.utils.StringUtils;
