@@ -9,16 +9,36 @@ import static org.junit.jupiter.api.Assertions.*;
 class HissTest extends BaseHissTest {
 
     @Test
-    void test() throws Exception {
-        System.out.println(hiss.encrypt("Your code is 123456", "\\d+"));
-        System.out.println(hiss.hash("Your code is 123456", "\\d+"));
-    }
-
-    @Test
     void testPropertiesValidationWorks() {
         assertThrows(IllegalArgumentException.class, () ->
                 HissFactory.createHiss(() ->
                         new HissProperties(null, null, null, null, null)));
+    }
+
+    @Test
+    void testEncrypt() {
+        // Given
+        var text = "some text";
+
+        // When
+        var encrypted = hiss.encrypt(text);
+
+        // Then
+        assertNotEquals("some text", encrypted);
+    }
+
+    @Test
+    void testEncrypt_whenContentIsAlreadyEncrypted() {
+        // Given
+        var text = "some text";
+
+        // When
+        var encrypted = hiss.encrypt(text);
+        encrypted = hiss.encrypt(encrypted);
+        encrypted = hiss.encrypt(encrypted);
+
+        // Then
+        assertEquals("some text", hiss.decrypt(encrypted));
     }
 
     @Test
@@ -29,6 +49,30 @@ class HissTest extends BaseHissTest {
     @Test
     void testEncrypt_whenValueIsEmpty() throws Exception {
         assertEquals("", hiss.encrypt(""));
+    }
+
+    @Test
+    void testDecrypt() {
+        // Given
+        var encryptedText = "#$$#{aes-128-gcm:default_key}{5Ki0pm8DwBRQPLXtkbBwNqAceuzgLEkOiZv6ecVNyPaAjqmme6gmVKw=}#$$#";
+
+        // When
+        var text = hiss.decrypt(encryptedText);
+
+        // Then
+        assertEquals("some text", text);
+    }
+
+    @Test
+    void testDecrypt_whenContentNotEncrypted() {
+        // Given
+        var text = "some text";
+
+        // When
+        var decryptedText = hiss.decrypt(text);
+
+        // Then
+        assertEquals("some text", decryptedText);
     }
 
     @Test
