@@ -8,9 +8,10 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
-public class HissTest_EncryptedInsideOnListAndSet extends BaseHissTest {
+public class EncryptedInsideAnnotationOnListAndSetTest extends BaseHissTest {
 
     @Test
     void testEncryptAndDecryptDomainObject() {
