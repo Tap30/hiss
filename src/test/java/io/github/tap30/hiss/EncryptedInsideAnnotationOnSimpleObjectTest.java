@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class HissTest_EncryptedInsideOnSimpleObject extends BaseHissTest {
+public class EncryptedInsideAnnotationOnSimpleObjectTest extends BaseHissTest {
 
     @Test
     void testEncryptAndDecryptDomainObject() {

@@ -1,6 +1,10 @@
 package io.github.tap30.hiss;
 
+import lombok.Setter;
+
 import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Supplier;
 
 /**
  * Sample Envs:
@@ -23,20 +27,24 @@ public class HissPropertiesFromEnvProvider implements HissPropertiesProvider {
 
     private static final String KEY_ENV_PREFIX = "HISS_KEYS_";
 
+    @Setter
+    private Supplier<Map<String, String>> envProvider = System::getenv;
+
     @Override
     public HissProperties getProperties() {
         var keys = new HashMap<String, String>();
-        System.getenv().forEach((k, v) -> {
+        var envs = envProvider.get();
+        envs.forEach((k, v) -> {
             if (k.startsWith(KEY_ENV_PREFIX)) {
                 keys.put(k.replace(KEY_ENV_PREFIX, "").toLowerCase(), v);
             }
         });
         return HissProperties.fromBase64EncodedKeys(
                 keys,
-                System.getenv("HISS_DEFAULT_ENCRYPTION_KEY_ID"),
-                System.getenv("HISS_DEFAULT_ENCRYPTION_ALGORITHM"),
-                System.getenv("HISS_DEFAULT_HASHING_KEY_ID"),
-                System.getenv("HISS_DEFAULT_HASHING_ALGORITHM")
+                envs.get("HISS_DEFAULT_ENCRYPTION_KEY_ID"),
+                envs.get("HISS_DEFAULT_ENCRYPTION_ALGORITHM"),
+                envs.get("HISS_DEFAULT_HASHING_KEY_ID"),
+                envs.get("HISS_DEFAULT_HASHING_ALGORITHM")
         );
     }
 

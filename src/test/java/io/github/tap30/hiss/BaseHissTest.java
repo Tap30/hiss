@@ -9,13 +9,15 @@ public class BaseHissTest {
 
     @BeforeEach
     void setUpHiss() {
-        hiss = HissFactory.createHiss(() -> HissProperties.fromBase64EncodedKeys(
-                Map.of("default_key", "AAAAAAAAAAAAAAAAAAAAAA=="),
-                "default_key",
-                "aes-128-gcm",
-                "default_key",
-                "hmac-sha256"
+        var hissPropertiesFromEnvProvider = new HissPropertiesFromEnvProvider();
+        hissPropertiesFromEnvProvider.setEnvProvider(() -> Map.of(
+                "HISS_DEFAULT_ENCRYPTION_KEY_ID", "default_key",
+                "HISS_DEFAULT_ENCRYPTION_ALGORITHM", "aes-128-gcm",
+                "HISS_DEFAULT_HASHING_KEY_ID", "default_key",
+                "HISS_DEFAULT_HASHING_ALGORITHM", "hmac-sha256",
+                "HISS_KEYS_DEFAULT_KEY", "AAAAAAAAAAAAAAAAAAAAAA=="
         ));
+        hiss = HissFactory.createHiss(hissPropertiesFromEnvProvider);
     }
 
 }
