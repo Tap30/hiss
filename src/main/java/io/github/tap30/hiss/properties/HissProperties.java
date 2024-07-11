@@ -1,61 +1,47 @@
 package io.github.tap30.hiss.properties;
 
-import io.github.tap30.hiss.utils.KeyUtils;
-import io.github.tap30.hiss.utils.StringUtils;
-import lombok.Value;
-
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Supplier;
 
-@Value
-public class HissProperties {
+public abstract class HissProperties {
 
-    Map<String, byte[]> keys;
-    String defaultEncryptionKeyId;
-    String defaultEncryptionAlgorithm;
-    String defaultHashingKeyId;
-    String defaultHashingAlgorithm;
+    private final Map<String, Object> properties = new HashMap<>();
 
-    public static HissProperties fromBase64EncodedKeys(Map<String, String> keys,
-                                                       String defaultEncryptionKeyId,
-                                                       String defaultEncryptionAlgorithm,
-                                                       String defaultHashingKeyId,
-                                                       String defaultHashingAlgorithm) {
-        return new HissProperties(
-                KeyUtils.convertBase64KeysToByteArrayKeys(keys),
-                defaultEncryptionKeyId,
-                defaultEncryptionAlgorithm,
-                defaultHashingKeyId,
-                defaultHashingAlgorithm
-        );
+    public Map<String, byte[]> getKeys() {
+        return this.getProperty("Keys", this::loadKeys);
     }
 
-    public void validate() {
-        var errors = new ArrayList<String>();
-        if (this.keys == null || this.keys.isEmpty()) {
-            errors.add("Keys are empty");
-        } else {
-            this.keys.forEach((k, v) -> {
-                if (v == null || v.length == 0) {
-                    errors.add("Key " + k + " is empty");
-                }
-            });
+    public String getDefaultEncryptionKeyId() {
+        return this.getProperty("DefaultEncryptionKeyId", this::loadDefaultEncryptionKeyId);
+    }
+
+    public String getDefaultEncryptionAlgorithm() {
+        return this.getProperty("DefaultEncryptionAlgorithm", this::loadDefaultEncryptionAlgorithm);
+    }
+
+    public String getDefaultHashingKeyId() {
+        return this.getProperty("DefaultHashingKeyId", this::loadDefaultHashingKeyId);
+    }
+
+    public String getDefaultHashingAlgorithm() {
+        return this.getProperty("DefaultHashingAlgorithm", this::loadDefaultHashingAlgorithm);
+    }
+
+    protected abstract Map<String, byte[]> loadKeys();
+    protected abstract String loadDefaultEncryptionKeyId();
+    protected abstract String loadDefaultEncryptionAlgorithm();
+    protected abstract String loadDefaultHashingKeyId();
+    protected abstract String loadDefaultHashingAlgorithm();
+
+    @SuppressWarnings("unchecked")
+    private <T> T getProperty(String key, Supplier<T> valueSupplier) {
+        if (this.properties.containsKey(key)) {
+            return (T) this.properties.get(key);
         }
-        if (!StringUtils.hasText(this.defaultEncryptionKeyId)) {
-            errors.add("Default encryption key ID is not defined");
-        }
-        if (!StringUtils.hasText(this.defaultEncryptionAlgorithm)) {
-            errors.add("Default encryption algorithm is not defined");
-        }
-        if (!StringUtils.hasText(this.defaultHashingKeyId)) {
-            errors.add("Default hashing key ID is not defined");
-        }
-        if (!StringUtils.hasText(this.defaultHashingAlgorithm)) {
-            errors.add("Default hashing algorithm is not defined");
-        }
-        if (!errors.isEmpty()) {
-            throw new IllegalArgumentException("Hiss properties are not valid: " + String.join("; ", errors));
-        }
+        var value = valueSupplier.get();
+        this.properties.put(key, value);
+        return value;
     }
 
 }

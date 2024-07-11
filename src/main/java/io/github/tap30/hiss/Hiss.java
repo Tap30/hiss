@@ -1,6 +1,7 @@
 package io.github.tap30.hiss;
 
 import io.github.tap30.hiss.properties.HissProperties;
+import io.github.tap30.hiss.properties.HissPropertiesValidator;
 import io.github.tap30.hiss.utils.EncryptionUtils;
 import org.intellij.lang.annotations.Language;
 import org.jetbrains.annotations.Nullable;
@@ -16,7 +17,7 @@ public class Hiss {
     private final HissObjectEncryptor hissObjectEncryptor;
 
     Hiss(HissProperties hissProperties) {
-        hissProperties.validate();
+        new HissPropertiesValidator().validate(hissProperties);
         this.hissEncryptor = new HissEncryptor(hissProperties);
         this.hissObjectEncryptor = new HissObjectEncryptor(this.hissEncryptor);
         logger.log(Level.INFO, "Hiss initialized:\n" +

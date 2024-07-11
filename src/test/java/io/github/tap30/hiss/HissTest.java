@@ -3,6 +3,8 @@ package io.github.tap30.hiss;
 import io.github.tap30.hiss.properties.HissProperties;
 import org.junit.jupiter.api.Test;
 
+import java.util.Map;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class HissTest extends BaseHissTest {
@@ -10,8 +12,32 @@ class HissTest extends BaseHissTest {
     @Test
     void testPropertiesValidationWorks() {
         assertThrows(IllegalArgumentException.class, () ->
-                HissFactory.createHiss(() ->
-                        new HissProperties(null, null, null, null, null)));
+                HissFactory.createHiss(new HissProperties() {
+                    @Override
+                    protected Map<String, byte[]> loadKeys() {
+                        return Map.of();
+                    }
+
+                    @Override
+                    protected String loadDefaultEncryptionKeyId() {
+                        return "";
+                    }
+
+                    @Override
+                    protected String loadDefaultEncryptionAlgorithm() {
+                        return "";
+                    }
+
+                    @Override
+                    protected String loadDefaultHashingKeyId() {
+                        return "";
+                    }
+
+                    @Override
+                    protected String loadDefaultHashingAlgorithm() {
+                        return "";
+                    }
+                }));
     }
 
     @Test
