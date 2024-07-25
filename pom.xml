@@ -40,9 +40,16 @@
         <mockito-junit-jupiter.version>5.11.0</mockito-junit-jupiter.version>
         <junit-jupiter.version>5.10.2</junit-jupiter.version>
         <jetbrains-annotations.version>24.1.0</jetbrains-annotations.version>
+        <bcrypt.version>0.10.2</bcrypt.version>
+        <lombok.version>1.18.30</lombok.version>
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>at.favre.lib</groupId>
+            <artifactId>bcrypt</artifactId>
+            <version>${bcrypt.version}</version>
+        </dependency>
         <dependency>
             <groupId>org.jetbrains</groupId>
             <artifactId>annotations</artifactId>
@@ -52,7 +59,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.30</version>
+            <version>${lombok.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>

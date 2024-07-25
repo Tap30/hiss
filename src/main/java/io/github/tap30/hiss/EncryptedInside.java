@@ -5,9 +5,11 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+// todo: improve doc
 /**
- * Used to tell Hiss to scan nested object.
+ * Fields annotated with this will be scanned
  */
+// todo: add example
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
 public @interface EncryptedInside {

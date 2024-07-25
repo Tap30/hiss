@@ -1,5 +1,6 @@
 package io.github.tap30.hiss;
 
+import io.github.tap30.hiss.key.Key;
 import io.github.tap30.hiss.properties.HissProperties;
 import org.junit.jupiter.api.Test;
 
@@ -14,7 +15,7 @@ class HissTest extends BaseHissTest {
         assertThrows(IllegalArgumentException.class, () ->
                 HissFactory.createHiss(new HissProperties() {
                     @Override
-                    protected Map<String, byte[]> loadKeys() {
+                    protected Map<String, Key> loadKeys() {
                         return Map.of();
                     }
 
@@ -36,6 +37,11 @@ class HissTest extends BaseHissTest {
                     @Override
                     protected String loadDefaultHashingAlgorithm() {
                         return "";
+                    }
+
+                    @Override
+                    protected boolean loadKeyHashGenerationEnabled() {
+                        return false;
                     }
                 }));
     }

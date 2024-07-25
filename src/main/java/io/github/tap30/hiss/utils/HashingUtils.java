@@ -1,6 +1,8 @@
 package io.github.tap30.hiss.utils;
 
 
+import io.github.tap30.hiss.key.Key;
+
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
@@ -13,7 +15,7 @@ import java.util.regex.Pattern;
 public class HashingUtils {
 
     public static String hash(String keyId,
-                              Map<String, byte[]> keys,
+                              Map<String, Key> keys,
                               String algorithm,
                               String content,
                               String pattern) throws Exception {

@@ -1,10 +1,17 @@
 package io.github.tap30.hiss.properties;
 
+import io.github.tap30.hiss.key.KeyHashGenerator;
 import io.github.tap30.hiss.utils.StringUtils;
 
 import java.util.ArrayList;
 
 public class HissPropertiesValidator {
+
+    private final KeyHashGenerator keyHashGenerator;
+
+    public HissPropertiesValidator(KeyHashGenerator keyHashGenerator) {
+        this.keyHashGenerator = keyHashGenerator;
+    }
 
     public void validate(HissProperties hissProperties) {
         var errors = new ArrayList<String>();
@@ -12,10 +19,14 @@ public class HissPropertiesValidator {
             errors.add("Keys are empty");
         } else {
             hissProperties.getKeys().forEach((k, v) -> {
-                if (v == null || v.length == 0) {
+                if (v == null || v.getKey() == null || v.getKey().length == 0) {
                     errors.add("Key " + k + " is empty");
                 }
             });
+            var mismatches = keyHashGenerator.validateKeyHashes(hissProperties.getKeys().values());
+            if (!mismatches.isEmpty()) {
+                errors.add("Key(s) " + mismatches + " did not match with their hashes");
+            }
         }
         if (!StringUtils.hasText(hissProperties.getDefaultEncryptionKeyId())) {
             errors.add("Default encryption key ID is not defined");

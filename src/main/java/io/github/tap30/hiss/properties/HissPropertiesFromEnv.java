@@ -1,8 +1,9 @@
 package io.github.tap30.hiss.properties;
 
-import io.github.tap30.hiss.utils.KeyUtils;
+import io.github.tap30.hiss.key.Key;
 import lombok.Setter;
 
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
@@ -27,19 +28,25 @@ import java.util.function.Supplier;
 public class HissPropertiesFromEnv extends HissProperties {
 
     private static final String KEY_ENV_PREFIX = "HISS_KEYS_";
+    private static final String KEY_HASH_ENV_POSTFIX = "___HASH";
 
-    @Setter
+    @Setter // todo: make it package private
     private Supplier<Map<String, String>> envProvider = System::getenv;
 
     @Override
-    public Map<String, byte[]> loadKeys() {
-        var keys = new HashMap<String, String>();
+    public Map<String, Key> loadKeys() {
+        var keys = new HashMap<String, Key>();
         envProvider.get().forEach((k, v) -> {
-            if (k.startsWith(KEY_ENV_PREFIX)) {
-                keys.put(k.replace(KEY_ENV_PREFIX, "").toLowerCase(), v);
+            if (k.startsWith(KEY_ENV_PREFIX) && !k.endsWith(KEY_HASH_ENV_POSTFIX)) {
+                var id = k.replace(KEY_ENV_PREFIX, "").toLowerCase();
+                keys.put(id, Key.builder()
+                        .id(id)
+                        .key(Base64.getDecoder().decode(v))
+                        .keyHash(envProvider.get().get(k + KEY_HASH_ENV_POSTFIX))
+                        .build());
             }
         });
-        return KeyUtils.convertBase64KeysToByteArrayKeys(keys);
+        return keys;
     }
 
     @Override
@@ -60,5 +67,10 @@ public class HissPropertiesFromEnv extends HissProperties {
     @Override
     public String loadDefaultHashingAlgorithm() {
         return envProvider.get().get("HISS_DEFAULT_HASHING_ALGORITHM");
+    }
+
+    @Override
+    protected boolean loadKeyHashGenerationEnabled() {
+        return Boolean.parseBoolean(envProvider.get().get("HISS_KEY_HASH_GENERATION_ENABLED"));
     }
 }
