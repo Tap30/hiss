@@ -5,11 +5,11 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-// todo: improve doc
+// Todo: improve doc
 /**
  * Fields annotated with this will be scanned
  */
-// todo: add example
+// Todo: add example
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
 public @interface EncryptedInside {

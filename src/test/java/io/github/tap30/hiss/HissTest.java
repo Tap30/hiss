@@ -1,49 +1,66 @@
 package io.github.tap30.hiss;
 
 import io.github.tap30.hiss.key.Key;
+import io.github.tap30.hiss.key.KeyHashGenerator;
 import io.github.tap30.hiss.properties.HissProperties;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 
-import java.util.Map;
+import java.util.Collection;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 class HissTest extends BaseHissTest {
 
+
     @Test
-    void testPropertiesValidationWorks() {
-        assertThrows(IllegalArgumentException.class, () ->
-                HissFactory.createHiss(new HissProperties() {
-                    @Override
-                    protected Map<String, Key> loadKeys() {
-                        return Map.of();
-                    }
+    void testKeyHashesAreGenerated() {
+        // Given
+        var keys = Set.of(Key.builder().build());
+        var properties = new HissProperties() {
+            @Override
+            protected Set<Key> loadKeys() {
+                return keys;
+            }
 
-                    @Override
-                    protected String loadDefaultEncryptionKeyId() {
-                        return "";
-                    }
+            @Override
+            protected String loadDefaultEncryptionKeyId() {
+                return "";
+            }
 
-                    @Override
-                    protected String loadDefaultEncryptionAlgorithm() {
-                        return "";
-                    }
+            @Override
+            protected String loadDefaultEncryptionAlgorithm() {
+                return "";
+            }
 
-                    @Override
-                    protected String loadDefaultHashingKeyId() {
-                        return "";
-                    }
+            @Override
+            protected String loadDefaultHashingKeyId() {
+                return "";
+            }
 
-                    @Override
-                    protected String loadDefaultHashingAlgorithm() {
-                        return "";
-                    }
+            @Override
+            protected String loadDefaultHashingAlgorithm() {
+                return "";
+            }
 
-                    @Override
-                    protected boolean loadKeyHashGenerationEnabled() {
-                        return false;
-                    }
-                }));
+            @Override
+            protected boolean loadKeyHashGenerationEnabled() {
+                return true;
+            }
+        };
+
+        var keyHashGenerator = mock(KeyHashGenerator.class);
+
+        // When
+        new Hiss(properties, keyHashGenerator);
+
+        // Then
+        var keysCaptor = ArgumentCaptor.forClass(Collection.class);
+        verify(keyHashGenerator).generateAndLogHashes(keysCaptor.capture());
+        assertEquals(keys, Set.copyOf(keysCaptor.getValue()));
     }
 
     @Test
@@ -73,12 +90,12 @@ class HissTest extends BaseHissTest {
     }
 
     @Test
-    void testEncrypt_whenValueIsNull() throws Exception {
+    void testEncrypt_whenValueIsNull() {
         assertNull(hiss.encrypt(null));
     }
 
     @Test
-    void testEncrypt_whenValueIsEmpty() throws Exception {
+    void testEncrypt_whenValueIsEmpty() {
         assertEquals("", hiss.encrypt(""));
     }
 
@@ -107,17 +124,17 @@ class HissTest extends BaseHissTest {
     }
 
     @Test
-    void testDecrypt_whenValueIsNull() throws Exception {
+    void testDecrypt_whenValueIsNull() {
         assertNull(hiss.decrypt(null));
     }
 
     @Test
-    void testDecrypt_whenValueIsEmpty() throws Exception {
+    void testDecrypt_whenValueIsEmpty() {
         assertEquals("", hiss.decrypt(""));
     }
 
     @Test
-    void testEncryptAndDecrypt() throws Exception {
+    void testEncryptAndDecrypt() {
         // Given
         final var content = "Hello; user with phone number +989123456789 and national code 1234567890 is verified.";
 
@@ -160,7 +177,7 @@ class HissTest extends BaseHissTest {
     }
 
     @Test
-    void testEncryptAndDecrypt_whenHavingPattern() throws Exception {
+    void testEncryptAndDecrypt_whenHavingPattern() {
         // Given
         final var content = "Hello; user with phone number +989123456789 and national code 1234567890 is verified.";
 
@@ -183,7 +200,7 @@ class HissTest extends BaseHissTest {
     }
 
     @Test
-    void testHash() throws Exception {
+    void testHash() {
         // Given
         final var content = "Hello; user with phone number +989123456789 and national code 1234567890 is verified.";
 
@@ -210,7 +227,7 @@ class HissTest extends BaseHissTest {
     }
 
     @Test
-    void testHash_producingSameValue() throws Exception {
+    void testHash_producingSameValue() {
         // Given
         final var content = "Hello; user with phone number +989123456789 and national code 1234567890 is verified.";
 
@@ -225,7 +242,7 @@ class HissTest extends BaseHissTest {
     }
 
     @Test
-    void testHash_whenHavingPattern() throws Exception {
+    void testHash_whenHavingPattern() {
         // Given
         final var content = "Hello; user with phone number +989123456789 and national code 1234567890 is verified.";
 

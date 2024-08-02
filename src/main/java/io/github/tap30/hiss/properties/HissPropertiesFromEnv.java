@@ -1,11 +1,11 @@
 package io.github.tap30.hiss.properties;
 
 import io.github.tap30.hiss.key.Key;
-import lombok.Setter;
 
 import java.util.Base64;
-import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Supplier;
 
 /**
@@ -30,19 +30,17 @@ public class HissPropertiesFromEnv extends HissProperties {
     private static final String KEY_ENV_PREFIX = "HISS_KEYS_";
     private static final String KEY_HASH_ENV_POSTFIX = "___HASH";
 
-    @Setter // todo: make it package private
-    private Supplier<Map<String, String>> envProvider = System::getenv;
+    private static final Supplier<Map<String, String>> ENV_PROVIDER = System::getenv;
 
     @Override
-    public Map<String, Key> loadKeys() {
-        var keys = new HashMap<String, Key>();
-        envProvider.get().forEach((k, v) -> {
+    public Set<Key> loadKeys() {
+        var keys = new HashSet<Key>();
+        ENV_PROVIDER.get().forEach((k, v) -> {
             if (k.startsWith(KEY_ENV_PREFIX) && !k.endsWith(KEY_HASH_ENV_POSTFIX)) {
-                var id = k.replace(KEY_ENV_PREFIX, "").toLowerCase();
-                keys.put(id, Key.builder()
-                        .id(id)
+                keys.add(Key.builder()
+                        .id(k.replace(KEY_ENV_PREFIX, "").toLowerCase())
                         .key(Base64.getDecoder().decode(v))
-                        .keyHash(envProvider.get().get(k + KEY_HASH_ENV_POSTFIX))
+                        .keyHash(ENV_PROVIDER.get().get(k + KEY_HASH_ENV_POSTFIX))
                         .build());
             }
         });
@@ -51,26 +49,26 @@ public class HissPropertiesFromEnv extends HissProperties {
 
     @Override
     public String loadDefaultEncryptionKeyId() {
-        return envProvider.get().get("HISS_DEFAULT_ENCRYPTION_KEY_ID");
+        return ENV_PROVIDER.get().get("HISS_DEFAULT_ENCRYPTION_KEY_ID");
     }
 
     @Override
     public String loadDefaultEncryptionAlgorithm() {
-        return envProvider.get().get("HISS_DEFAULT_ENCRYPTION_ALGORITHM");
+        return ENV_PROVIDER.get().get("HISS_DEFAULT_ENCRYPTION_ALGORITHM");
     }
 
     @Override
     public String loadDefaultHashingKeyId() {
-        return envProvider.get().get("HISS_DEFAULT_HASHING_KEY_ID");
+        return ENV_PROVIDER.get().get("HISS_DEFAULT_HASHING_KEY_ID");
     }
 
     @Override
     public String loadDefaultHashingAlgorithm() {
-        return envProvider.get().get("HISS_DEFAULT_HASHING_ALGORITHM");
+        return ENV_PROVIDER.get().get("HISS_DEFAULT_HASHING_ALGORITHM");
     }
 
     @Override
     protected boolean loadKeyHashGenerationEnabled() {
-        return Boolean.parseBoolean(envProvider.get().get("HISS_KEY_HASH_GENERATION_ENABLED"));
+        return Boolean.parseBoolean(ENV_PROVIDER.get().get("HISS_KEY_HASH_GENERATION_ENABLED"));
     }
 }
