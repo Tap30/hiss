@@ -1,6 +1,8 @@
 package io.github.tap30.hiss.utils;
 
 
+import io.github.tap30.hiss.key.Key;
+
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
@@ -28,7 +30,7 @@ public class EncryptionUtils {
     private static final SecureRandom SECURE_RANDOM = new SecureRandom();
 
     public static String encrypt(String keyId,
-                                 Map<String, byte[]> keys,
+                                 Map<String, Key> keys,
                                  String algorithm,
                                  String content,
                                  String pattern) throws Exception {
@@ -78,7 +80,7 @@ public class EncryptionUtils {
     }
 
 
-    public static String decrypt(Map<String, byte[]> keys, String content) throws Exception {
+    public static String decrypt(Map<String, Key> keys, String content) throws Exception {
         if (!StringUtils.hasText(content) || !isHavingEncryptionPattern(content)) {
             return content;
         }

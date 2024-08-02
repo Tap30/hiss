@@ -1,15 +1,19 @@
 package io.github.tap30.hiss;
 
+import io.github.tap30.hiss.properties.HissProperties;
 import io.github.tap30.hiss.utils.EncryptionUtils;
 import io.github.tap30.hiss.utils.HashingUtils;
 import org.intellij.lang.annotations.Language;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Objects;
 
 class HissEncryptor {
 
     private final HissProperties hissProperties;
 
     public HissEncryptor(HissProperties hissProperties) {
+        Objects.requireNonNull(hissProperties);
         this.hissProperties = hissProperties;
     }
 
