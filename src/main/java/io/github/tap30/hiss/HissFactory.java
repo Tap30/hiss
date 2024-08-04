@@ -1,11 +1,14 @@
 package io.github.tap30.hiss;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
-import io.github.tap30.hiss.encryptor.*;
+import io.github.tap30.hiss.encryptor.Encryptor;
+import io.github.tap30.hiss.encryptor.impl.AesCbcPkcs5PaddingEncryptor;
+import io.github.tap30.hiss.encryptor.impl.AesGcmNoPaddingEncryptor;
+import io.github.tap30.hiss.encryptor.impl.TapsiAesCbcEncryptor;
+import io.github.tap30.hiss.encryptor.impl.TapsiAesGcmEncryptor;
 import io.github.tap30.hiss.hasher.Hasher;
-import io.github.tap30.hiss.hasher.HissHasher;
-import io.github.tap30.hiss.hasher.HmacSha256Hasher;
-import io.github.tap30.hiss.hasher.TapsiHmacSha256Hasher;
+import io.github.tap30.hiss.hasher.impl.HmacSha256Hasher;
+import io.github.tap30.hiss.hasher.impl.TapsiHmacSha256Hasher;
 import io.github.tap30.hiss.key.KeyHashGenerator;
 import io.github.tap30.hiss.properties.HissProperties;
 import io.github.tap30.hiss.properties.HissPropertiesValidator;

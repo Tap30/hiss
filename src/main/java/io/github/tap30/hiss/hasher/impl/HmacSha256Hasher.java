@@ -1,4 +1,6 @@
-package io.github.tap30.hiss.hasher;
+package io.github.tap30.hiss.hasher.impl;
+
+import io.github.tap30.hiss.hasher.Hasher;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;

@@ -1,6 +1,6 @@
-package io.github.tap30.hiss.hasher;
+package io.github.tap30.hiss;
 
-import io.github.tap30.hiss.encryptor.HissEncryptor;
+import io.github.tap30.hiss.hasher.Hasher;
 import io.github.tap30.hiss.key.Key;
 import io.github.tap30.hiss.utils.StringUtils;
 
@@ -12,7 +12,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-public class HissHasher {
+class HissHasher {
 
     private static final Charset CHARSET = StandardCharsets.UTF_8;
 

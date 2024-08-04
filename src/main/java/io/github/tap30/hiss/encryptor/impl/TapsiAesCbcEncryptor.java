@@ -1,4 +1,4 @@
-package io.github.tap30.hiss.encryptor;
+package io.github.tap30.hiss.encryptor.impl;
 
 public class TapsiAesCbcEncryptor extends AesCbcPkcs5PaddingEncryptor {
     @Override

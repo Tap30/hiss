@@ -10,9 +10,9 @@ import java.util.Set;
 public class HissPropertiesValidator {
 
     private static final Set<String> SUPPORTED_ENCRYPTION_ALGORITHMS =
-            Set.of("aes-128-gcm", "aes-128-cbc"); // Todo: get these from algorithm spec
+            Set.of("aes-128-gcm", "aes-128-cbc"); // Todo: get these from factory
     private static final Set<String> SUPPORTED_HASHING_ALGORITHMS =
-            Set.of("hmac-sha256"); // Todo: get this from algorithm spec
+            Set.of("hmac-sha256"); // Todo: get this from factory
 
     private final KeyHashGenerator keyHashGenerator;
 

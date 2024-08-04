@@ -1,4 +1,6 @@
-package io.github.tap30.hiss.encryptor;
+package io.github.tap30.hiss.encryptor.impl;
+
+import io.github.tap30.hiss.encryptor.Encryptor;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;

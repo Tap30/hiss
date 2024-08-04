@@ -1,5 +1,6 @@
-package io.github.tap30.hiss.encryptor;
+package io.github.tap30.hiss;
 
+import io.github.tap30.hiss.encryptor.Encryptor;
 import io.github.tap30.hiss.key.Key;
 import io.github.tap30.hiss.utils.StringUtils;
 
@@ -13,7 +14,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-public class HissEncryptor {
+class HissEncryptor {
 
     /**
      * Group 1 is algorithm name; group 2 is key ID; group 3 is base64 encoded encrypted content

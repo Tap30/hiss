@@ -1,4 +1,4 @@
-package io.github.tap30.hiss.encryptor;
+package io.github.tap30.hiss.encryptor.impl;
 
 import javax.crypto.spec.IvParameterSpec;
 
