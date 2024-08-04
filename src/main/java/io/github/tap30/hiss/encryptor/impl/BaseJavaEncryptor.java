@@ -13,8 +13,8 @@ public abstract class BaseJavaEncryptor implements Encryptor {
 
     private static final SecureRandom SECURE_RANDOM = new SecureRandom();
 
-    private final String keyAlgorithmName;
     private final String algorithmName;
+    private final String keyAlgorithmName;
     private final int ivLength;
     private final Function<byte[], AlgorithmParameterSpec> algorithmParameterSpecSupplier;
 
@@ -22,8 +22,8 @@ public abstract class BaseJavaEncryptor implements Encryptor {
                                 String keyAlgorithmName,
                                 int ivLength,
                                 Function<byte[], AlgorithmParameterSpec> algorithmParameterSpecSupplier) {
-        this.keyAlgorithmName = Objects.requireNonNull(keyAlgorithmName);
         this.algorithmName = Objects.requireNonNull(algorithmName);
+        this.keyAlgorithmName = Objects.requireNonNull(keyAlgorithmName);
         this.ivLength = ivLength;
         this.algorithmParameterSpecSupplier = Objects.requireNonNull(algorithmParameterSpecSupplier);
     }
