@@ -7,7 +7,7 @@ public class AesCbcPkcs5PaddingEncryptor extends BaseJavaEncryptor {
     private final static String ALGORITHM_NAME = "AES/CBC/PKCS5Padding";
 
     public AesCbcPkcs5PaddingEncryptor() {
-        super("AES", ALGORITHM_NAME, 16, IvParameterSpec::new);
+        super(ALGORITHM_NAME, "AES", 16, IvParameterSpec::new);
     }
 
     @Override

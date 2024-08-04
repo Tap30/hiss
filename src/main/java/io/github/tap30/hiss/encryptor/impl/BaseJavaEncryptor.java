@@ -18,8 +18,8 @@ public abstract class BaseJavaEncryptor implements Encryptor {
     private final int ivLength;
     private final Function<byte[], AlgorithmParameterSpec> algorithmParameterSpecSupplier;
 
-    protected BaseJavaEncryptor(String keyAlgorithmName,
-                                String algorithmName,
+    protected BaseJavaEncryptor(String algorithmName,
+                                String keyAlgorithmName,
                                 int ivLength,
                                 Function<byte[], AlgorithmParameterSpec> algorithmParameterSpecSupplier) {
         this.keyAlgorithmName = Objects.requireNonNull(keyAlgorithmName);

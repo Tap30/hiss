@@ -7,7 +7,7 @@ public class AesGcmNoPaddingEncryptor extends BaseJavaEncryptor {
     private static final String ALGORITHM_NAME = "AES/GCM/NoPadding";
 
     public AesGcmNoPaddingEncryptor() {
-        super("AES", ALGORITHM_NAME, 16, iv -> new GCMParameterSpec(128, iv));
+        super(ALGORITHM_NAME, "AES", 16, iv -> new GCMParameterSpec(128, iv));
     }
 
     @Override
