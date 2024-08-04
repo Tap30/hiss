@@ -1,33 +1,24 @@
 package io.github.tap30.hiss;
 
-import io.github.tap30.hiss.key.KeyHashGenerator;
-import io.github.tap30.hiss.properties.HissProperties;
-import io.github.tap30.hiss.utils.EncryptionUtils;
+import io.github.tap30.hiss.encryptor.HissEncryptor;
+import io.github.tap30.hiss.hasher.HissHasher;
 import org.intellij.lang.annotations.Language;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class Hiss {
 
-    private static final Logger logger = Logger.getLogger(Hiss.class.getName());
-
     private final HissEncryptor hissEncryptor;
+    private final HissHasher hissHasher;
     private final HissObjectEncryptor hissObjectEncryptor;
 
-    Hiss(HissProperties hissProperties, KeyHashGenerator keyHashGenerator) {
-        Objects.requireNonNull(hissProperties);
-        Objects.requireNonNull(keyHashGenerator);
-
-        this.hissEncryptor = new HissEncryptor(hissProperties);
-        this.hissObjectEncryptor = new HissObjectEncryptor(this.hissEncryptor);
-
-        logHissInitialized(hissProperties);
-        if (hissProperties.isKeyHashGenerationEnabled()) {
-            keyHashGenerator.generateAndLogHashes(hissProperties.getKeys().values());
-        }
+    Hiss(HissEncryptor hissEncryptor,
+         HissHasher hissHasher,
+         HissObjectEncryptor hissObjectEncryptor) {
+        this.hissEncryptor = Objects.requireNonNull(hissEncryptor);
+        this.hissHasher = Objects.requireNonNull(hissHasher);
+        this.hissObjectEncryptor = Objects.requireNonNull(hissObjectEncryptor);
     }
 
     /**
@@ -49,7 +40,11 @@ public class Hiss {
      * @return encrypted content or null if the content is null.
      */
     public String encrypt(@Nullable String content, @Language("regexp") @Nullable String pattern) {
-        return hissEncryptor.encrypt(content, pattern);
+        try {
+            return hissEncryptor.encrypt(content, pattern);
+        } catch (Exception e) { // todo: remove try-catch?
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -62,7 +57,11 @@ public class Hiss {
      * @throws IllegalArgumentException if key ID or algorithm is not loaded/supported.
      */
     public String decrypt(@Nullable String content) {
-        return hissEncryptor.decrypt(content);
+        try {
+            return hissEncryptor.decrypt(content);
+        } catch (Exception e) { // todo: remove try-catch?
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -84,7 +83,11 @@ public class Hiss {
      * @return hashed content or null if the content is null.
      */
     public String hash(@Nullable String content, @Language("regexp") @Nullable String pattern) {
-        return hissEncryptor.hash(content, pattern);
+        try {
+            return hissHasher.hash(content, pattern);
+        } catch (Exception e) { // todo: remove try-catch?
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -94,7 +97,7 @@ public class Hiss {
      * @return <code>true</code> if the content or parts of it is encrypted.
      */
     public boolean isEncrypted(@Nullable String content) {
-        return EncryptionUtils.isHavingEncryptionPattern(content);
+        return hissEncryptor.isEncrypted(content);
     }
 
     /**
@@ -104,7 +107,7 @@ public class Hiss {
      * @return <code>true</code> if the content or parts of it is hashed.
      */
     public boolean isHashed(@Nullable String content) {
-        return EncryptionUtils.isHavingEncryptionPattern(content);
+        return hissHasher.isHashed(content);
     }
 
     /**
@@ -123,22 +126,6 @@ public class Hiss {
      */
     public void decryptObject(@Nullable Object object) {
         hissObjectEncryptor.decryptObject(object);
-    }
-
-    private void logHissInitialized(HissProperties hissProperties) {
-        logger.log(Level.INFO, "Hiss initialized:\n" +
-                        "  Loaded Keys: {0}\n" +
-                        "  Default Encryption Key ID: {1}\n" +
-                        "  Default Encryption Algorithm: {2}\n" +
-                        "  Default Hashing Key ID: {3}\n" +
-                        "  Default Hashing Algorithm: {4}",
-                new Object[]{
-                        hissProperties.getKeys().keySet(),
-                        hissProperties.getDefaultEncryptionKeyId(),
-                        hissProperties.getDefaultEncryptionAlgorithm(),
-                        hissProperties.getDefaultHashingKeyId(),
-                        hissProperties.getDefaultHashingAlgorithm()
-                });
     }
 
 }

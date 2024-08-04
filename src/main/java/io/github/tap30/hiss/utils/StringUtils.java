@@ -6,4 +6,11 @@ public class StringUtils {
         return text != null && !text.isBlank();
     }
 
+    public static String requireNonBlank(String text) {
+        if (!hasText(text)) {
+            throw new IllegalArgumentException();
+        }
+        return text;
+    }
+
 }

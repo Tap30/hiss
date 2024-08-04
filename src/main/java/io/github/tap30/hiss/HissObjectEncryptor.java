@@ -1,12 +1,13 @@
 package io.github.tap30.hiss;
 
-import lombok.Value;
-import org.intellij.lang.annotations.Language;
+import io.github.tap30.hiss.encryptor.HissEncryptor;
+import io.github.tap30.hiss.hasher.HissHasher;
 import io.github.tap30.hiss.utils.ReflectionUtils;
 import io.github.tap30.hiss.utils.StringUtils;
+import lombok.Value;
+import org.intellij.lang.annotations.Language;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
 import java.util.function.BiConsumer;
@@ -19,10 +20,13 @@ class HissObjectEncryptor {
     private final static Map<Class<?>, ClassDescription> CLASSES_DESCRIPTION_CACHE = new HashMap<>();
 
     private final HissEncryptor hissEncryptor;
+    private final HissHasher hissHasher;
 
 
-    public HissObjectEncryptor(HissEncryptor hissEncryptor) {
-        this.hissEncryptor = hissEncryptor;
+    public HissObjectEncryptor(HissEncryptor hissEncryptor,
+                               HissHasher hissHasher) {
+        this.hissEncryptor = Objects.requireNonNull(hissEncryptor);
+        this.hissHasher = Objects.requireNonNull(hissHasher);
     }
 
     public void encryptObject(Object domainObject) {
@@ -78,7 +82,7 @@ class HissObjectEncryptor {
             var encryptedContent = this.hissEncryptor.encrypt(content, pattern);
             fieldAnnotatedWithEncrypted.getContentField().getSetter().invoke(object, encryptedContent);
             if (fieldAnnotatedWithEncrypted.getEncryptedAnnotation().hashingEnabled()) {
-                var hashedContent = this.hissEncryptor.hash(content, pattern);
+                var hashedContent = this.hissHasher.hash(content, pattern);
                 fieldAnnotatedWithEncrypted.getHashField().getSetter().invoke(object, hashedContent);
             }
         } catch (Exception e) {
@@ -166,7 +170,7 @@ class HissObjectEncryptor {
         }
     }
 
-    private static String getContent(FieldAnnotatedWithEncrypted fieldAnnotatedWithEncrypted, Object object) throws IllegalAccessException, InvocationTargetException {
+    private static String getContent(FieldAnnotatedWithEncrypted fieldAnnotatedWithEncrypted, Object object) {
         return ReflectionUtils.invokeGetter(fieldAnnotatedWithEncrypted.getContentField().getGetter(), object, String.class);
     }
 

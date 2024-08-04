@@ -17,8 +17,7 @@ public class HissPropertiesValidator {
     private final KeyHashGenerator keyHashGenerator;
 
     public HissPropertiesValidator(KeyHashGenerator keyHashGenerator) {
-        Objects.requireNonNull(keyHashGenerator);
-        this.keyHashGenerator = keyHashGenerator;
+        this.keyHashGenerator = Objects.requireNonNull(keyHashGenerator);
     }
 
     public void validate(HissProperties hissProperties) {
