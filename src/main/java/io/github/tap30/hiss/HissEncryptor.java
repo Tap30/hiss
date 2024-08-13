@@ -33,7 +33,7 @@ class HissEncryptor {
                          String defaultEncryptionAlgorithm,
                          String defaultEncryptionKeyId) {
         Objects.requireNonNull(encryptors);
-        this.encryptors = encryptors.stream().collect(Collectors.toMap(Encryptor::getName, e -> e));
+        this.encryptors = encryptors.stream().collect(Collectors.toMap(e -> e.getName().toLowerCase(), e -> e));
         this.keys = Objects.requireNonNull(keys);
         this.defaultEncryptionAlgorithm = StringUtils.requireNonBlank(defaultEncryptionAlgorithm);
         this.defaultEncryptionKeyId = StringUtils.requireNonBlank(defaultEncryptionKeyId);

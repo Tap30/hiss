@@ -23,7 +23,7 @@ public abstract class HissProperties {
     }
 
     public String getDefaultEncryptionAlgorithm() {
-        return this.getProperty("DefaultEncryptionAlgorithm", this::loadDefaultEncryptionAlgorithm);
+        return this.getProperty("DefaultEncryptionAlgorithm", () -> loadDefaultEncryptionAlgorithm().toLowerCase());
     }
 
     public String getDefaultHashingKeyId() {
@@ -31,7 +31,7 @@ public abstract class HissProperties {
     }
 
     public String getDefaultHashingAlgorithm() {
-        return this.getProperty("DefaultHashingAlgorithm", this::loadDefaultHashingAlgorithm);
+        return this.getProperty("DefaultHashingAlgorithm", () -> loadDefaultHashingAlgorithm().toLowerCase());
     }
 
     public boolean isKeyHashGenerationEnabled() {

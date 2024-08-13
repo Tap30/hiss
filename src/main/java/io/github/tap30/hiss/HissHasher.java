@@ -25,7 +25,7 @@ class HissHasher {
                       Map<String, Key> keys,
                       String defaultHashingAlgorithm,
                       String defaultHashingKeyId) {
-        this.hashers = hashers.stream().collect(Collectors.toMap(Hasher::getName, h -> h));
+        this.hashers = hashers.stream().collect(Collectors.toMap(h -> h.getName().toLowerCase(), h -> h));
         this.keys = keys;
         this.defaultHashingAlgorithm = defaultHashingAlgorithm;
         this.defaultHashingKeyId = defaultHashingKeyId;

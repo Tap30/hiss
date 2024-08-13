@@ -3,8 +3,6 @@ package io.github.tap30.hiss.hasher;
 public interface Hasher {
     /**
      * Calculates hash of provided content.
-     * @param key
-     * @param content
      * @return hash of content.
      */
     byte[] hash(byte[] key, byte[] content) throws Exception;
@@ -16,5 +14,5 @@ public interface Hasher {
      * <code>'{'</code>, <code>'}'</code>, <code>':'</code>, and <code>'#$$#'</code>.
      * @return hasher name.
      */
-    String getName(); // todo: should names be lowercased?
+    String getName();
 }
