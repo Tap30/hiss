@@ -2,15 +2,13 @@ package io.github.tap30.hiss.utils;
 
 import org.junit.jupiter.api.Test;
 
-import java.lang.reflect.InvocationTargetException;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class ReflectionUtilsTest {
 
     @Test
-    void testInvokeGetter() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+    void testInvokeGetter() throws NoSuchMethodException {
         // Given
         var aClassInstance = new AClass();
         var nameGetterMethod = aClassInstance.getClass().getDeclaredMethod("getName");
@@ -23,7 +21,7 @@ class ReflectionUtilsTest {
     }
 
     @Test
-    void testInvokeGetter_whenTypeNotMatches() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+    void testInvokeGetter_whenTypeNotMatches() throws NoSuchMethodException {
         // Given
         var aClassInstance = new AClass();
         var nameGetterMethod = aClassInstance.getClass().getDeclaredMethod("getName");
