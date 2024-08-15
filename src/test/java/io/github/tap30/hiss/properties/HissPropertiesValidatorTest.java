@@ -1,5 +1,7 @@
 package io.github.tap30.hiss.properties;
 
+import io.github.tap30.hiss.encryptor.Encryptor;
+import io.github.tap30.hiss.hasher.Hasher;
 import io.github.tap30.hiss.key.Key;
 import io.github.tap30.hiss.key.KeyHashGenerator;
 import org.junit.jupiter.api.Test;
@@ -16,11 +18,20 @@ import static org.mockito.Mockito.*;
 class HissPropertiesValidatorTest {
 
     KeyHashGenerator keyHashGenerator = mock(KeyHashGenerator.class);
-    HissPropertiesValidator hissPropertiesValidator = new HissPropertiesValidator(keyHashGenerator);
+    HissPropertiesValidator hissPropertiesValidator = new HissPropertiesValidator(
+            keyHashGenerator,
+            Map.of("aes-128-gcm", mock(Encryptor.class)),
+            Map.of("hmac-sha256", mock(Hasher.class))
+    );
 
     @Test
-    void testConstructor_whenKeyHashGeneratorIsNull() {
-        assertThrows(NullPointerException.class, () -> new HissPropertiesValidator(null));
+    void testConstructor_whenConstructionArgumentsAreNull() {
+        assertThrows(NullPointerException.class,
+                () -> new HissPropertiesValidator(null, Map.of(), Map.of()));
+        assertThrows(NullPointerException.class,
+                () -> new HissPropertiesValidator(keyHashGenerator, null, Map.of()));
+        assertThrows(NullPointerException.class,
+                () -> new HissPropertiesValidator(keyHashGenerator, Map.of(), null));
     }
 
     // Keys Validation

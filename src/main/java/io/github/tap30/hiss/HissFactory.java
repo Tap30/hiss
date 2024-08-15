@@ -14,10 +14,7 @@ import io.github.tap30.hiss.properties.HissProperties;
 import io.github.tap30.hiss.properties.HissPropertiesValidator;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -63,27 +60,29 @@ public class HissFactory {
         Objects.requireNonNull(encryptors);
         Objects.requireNonNull(hashers);
 
-        var keyHashGenerator = new KeyHashGenerator(BCrypt.withDefaults(), BCrypt.verifyer());
-        new HissPropertiesValidator(keyHashGenerator).validate(hissProperties);
+        var encryptorsMap = addDefaultEncryptors(encryptors)
+                .stream().collect(Collectors.toMap(e -> e.getName().toLowerCase(), e -> e));
+        var hashersMap = addDefaultHashers(hashers)
+                .stream().collect(Collectors.toMap(h -> h.getName().toLowerCase(), h -> h));
 
-        encryptors = addDefaultEncryptors(encryptors);
-        hashers = addDefaultHashers(hashers);
+        var keyHashGenerator = new KeyHashGenerator(BCrypt.withDefaults(), BCrypt.verifyer());
+        new HissPropertiesValidator(keyHashGenerator, encryptorsMap, hashersMap).validate(hissProperties);
 
         var hissEncryptor = new HissEncryptor(
-                encryptors,
+                encryptorsMap,
                 hissProperties.getKeys(),
                 hissProperties.getDefaultEncryptionAlgorithm(),
                 hissProperties.getDefaultEncryptionKeyId()
         );
         var hissHasher = new HissHasher(
-                hashers,
+                hashersMap,
                 hissProperties.getKeys(),
                 hissProperties.getDefaultHashingAlgorithm(),
                 hissProperties.getDefaultHashingKeyId()
         );
         var hissObjectEncryptor = new HissObjectEncryptor(hissEncryptor, hissHasher);
 
-        logInitializingHiss(hissProperties, encryptors, hashers);
+        logInitializingHiss(hissProperties, encryptorsMap, hashersMap);
         if (hissProperties.isKeyHashGenerationEnabled()) {
             keyHashGenerator.generateAndLogHashes(hissProperties.getKeys().values());
         }
@@ -110,8 +109,8 @@ public class HissFactory {
     }
 
     private static void logInitializingHiss(HissProperties hissProperties,
-                                     Set<Encryptor> encryptors,
-                                     Set<Hasher> hashers) {
+                                     Map<String, Encryptor> encryptors,
+                                     Map<String, Hasher> hashers) {
         logger.log(Level.INFO, "Hiss initialized:\n" +
                         "  Loaded Keys: {0}\n" +
                         "  Default Encryption Key ID: {1}\n" +
@@ -126,8 +125,8 @@ public class HissFactory {
                         hissProperties.getDefaultEncryptionAlgorithm(),
                         hissProperties.getDefaultHashingKeyId(),
                         hissProperties.getDefaultHashingAlgorithm(),
-                        encryptors.stream().map(Encryptor::getName).collect(Collectors.toSet()),
-                        hashers.stream().map(Hasher::getName).collect(Collectors.toSet())
+                        encryptors.keySet(),
+                        hashers.keySet()
                 });
     }
 

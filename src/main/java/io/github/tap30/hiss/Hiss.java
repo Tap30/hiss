@@ -40,7 +40,7 @@ public class Hiss {
     public String encrypt(@Nullable String content, @Language("regexp") @Nullable String pattern) {
         try {
             return hissEncryptor.encrypt(content, pattern);
-        } catch (Exception e) { // todo: remove try-catch?
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
@@ -57,7 +57,7 @@ public class Hiss {
     public String decrypt(@Nullable String content) {
         try {
             return hissEncryptor.decrypt(content);
-        } catch (Exception e) { // todo: remove try-catch?
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
@@ -83,7 +83,7 @@ public class Hiss {
     public String hash(@Nullable String content, @Language("regexp") @Nullable String pattern) {
         try {
             return hissHasher.hash(content, pattern);
-        } catch (Exception e) { // todo: remove try-catch?
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }

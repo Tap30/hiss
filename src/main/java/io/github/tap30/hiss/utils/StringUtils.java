@@ -13,4 +13,11 @@ public class StringUtils {
         return text;
     }
 
+    public static String toLowerCase(String text) {
+        if (!hasText(text)) {
+            return text;
+        }
+        return text.toLowerCase();
+    }
+
 }

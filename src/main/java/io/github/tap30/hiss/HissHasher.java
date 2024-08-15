@@ -7,10 +7,9 @@ import io.github.tap30.hiss.utils.StringUtils;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
-import java.util.Set;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 class HissHasher {
 
@@ -21,15 +20,14 @@ class HissHasher {
     private final String defaultHashingAlgorithm;
     private final String defaultHashingKeyId;
 
-    public HissHasher(Set<Hasher> hashers,
+    public HissHasher(Map<String, Hasher> hashers,
                       Map<String, Key> keys,
                       String defaultHashingAlgorithm,
                       String defaultHashingKeyId) {
-        this.hashers = hashers.stream().collect(Collectors.toMap(h -> h.getName().toLowerCase(), h -> h));
-        this.keys = keys;
-        this.defaultHashingAlgorithm = defaultHashingAlgorithm;
-        this.defaultHashingKeyId = defaultHashingKeyId;
-        // todo: validate defaults are found in encryptors and keys
+        this.hashers = Objects.requireNonNull(hashers);
+        this.keys = Objects.requireNonNull(keys);
+        this.defaultHashingAlgorithm = StringUtils.requireNonBlank(defaultHashingAlgorithm);
+        this.defaultHashingKeyId = StringUtils.requireNonBlank(defaultHashingKeyId);
     }
 
     public String hash(String content, String pattern) throws Exception {
@@ -37,8 +35,10 @@ class HissHasher {
             return content;
         }
 
-        var hasher = hashers.get(defaultHashingAlgorithm); // todo: not null
-        var key = keys.get(defaultHashingKeyId); // todo: not null
+        var hasher = Objects.requireNonNull(hashers.get(defaultHashingAlgorithm),
+                "Algorithm not supported: " + defaultHashingAlgorithm);
+        var key = Objects.requireNonNull(keys.get(defaultHashingKeyId),
+                "Key not found: " + defaultHashingKeyId);
 
         if (StringUtils.hasText(pattern)) {
             StringBuilder result = new StringBuilder();

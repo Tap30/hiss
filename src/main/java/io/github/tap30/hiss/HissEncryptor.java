@@ -3,16 +3,15 @@ package io.github.tap30.hiss;
 import io.github.tap30.hiss.encryptor.Encryptor;
 import io.github.tap30.hiss.key.Key;
 import io.github.tap30.hiss.utils.StringUtils;
+import lombok.Value;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 class HissEncryptor {
 
@@ -28,16 +27,14 @@ class HissEncryptor {
     private final String defaultEncryptionAlgorithm;
     private final String defaultEncryptionKeyId;
 
-    public HissEncryptor(Set<Encryptor> encryptors,
+    public HissEncryptor(Map<String, Encryptor> encryptors,
                          Map<String, Key> keys,
                          String defaultEncryptionAlgorithm,
                          String defaultEncryptionKeyId) {
-        Objects.requireNonNull(encryptors);
-        this.encryptors = encryptors.stream().collect(Collectors.toMap(e -> e.getName().toLowerCase(), e -> e));
+        this.encryptors = Objects.requireNonNull(encryptors);
         this.keys = Objects.requireNonNull(keys);
         this.defaultEncryptionAlgorithm = StringUtils.requireNonBlank(defaultEncryptionAlgorithm);
         this.defaultEncryptionKeyId = StringUtils.requireNonBlank(defaultEncryptionKeyId);
-        // todo: validate defaults are found in encryptors and keys
     }
 
     public String encrypt(String content, String pattern) throws Exception {
@@ -45,8 +42,7 @@ class HissEncryptor {
             return content;
         }
 
-        var encryptor = encryptors.get(defaultEncryptionAlgorithm); // todo: not null
-        var key = keys.get(defaultEncryptionKeyId); // todo: not null
+        var encryptorAndKey = getEncryptorAndKey(defaultEncryptionAlgorithm, defaultEncryptionKeyId);
 
         if (StringUtils.hasText(pattern)) {
             StringBuilder result = new StringBuilder();
@@ -54,14 +50,14 @@ class HissEncryptor {
 
             while (matcher.find()) {
                 var partToBeEncrypted = matcher.group();
-                var encryptedContent = encrypt(encryptor, key, partToBeEncrypted);
+                var encryptedContent = encrypt(encryptorAndKey, partToBeEncrypted);
                 matcher.appendReplacement(result, Matcher.quoteReplacement(encryptedContent));
             }
             matcher.appendTail(result);
 
             return result.toString();
         } else {
-            return encrypt(encryptor, key, content);
+            return encrypt(encryptorAndKey, content);
         }
     }
 
@@ -78,10 +74,7 @@ class HissEncryptor {
             var keyId = matcher.group(2);
             var encryptedContent = matcher.group(3);
 
-            var key = keys.get(keyId); // todo: not null
-            var encryptor = encryptors.get(algorithm); // todo: not null
-
-            var decryptedContent = decrypt(encryptor, key, encryptedContent);
+            var decryptedContent = decrypt(getEncryptorAndKey(algorithm, keyId), encryptedContent);
             matcher.appendReplacement(result, Matcher.quoteReplacement(decryptedContent));
         }
         matcher.appendTail(result);
@@ -93,19 +86,6 @@ class HissEncryptor {
         return isHavingEncryptedContentPattern(content);
     }
 
-    private String encrypt(Encryptor encryptor, Key key, String content) throws Exception {
-        var contentBytes = content.getBytes(CHARSET);
-        var encryptedBytes = encryptor.encrypt(key.getKey(), contentBytes);
-        return formatEncryptedBytes(encryptor.getName(), key.getId(), encryptedBytes);
-    }
-
-    private String decrypt(Encryptor encryptor, Key key, String content) throws Exception {
-        var contentBytes = Base64.getDecoder().decode(content);
-        var decryptedBytes = encryptor.decrypt(key.getKey(), contentBytes);
-        return new String(decryptedBytes, CHARSET);
-    }
-
-
     public static String formatEncryptedBytes(String algorithmName, String keyId, byte[] bytes) {
         var base64Encoded = Base64.getEncoder().encodeToString(bytes);
         return "#$$#{" + algorithmName + ":" + keyId + "}{" + base64Encoded + "}#$$#";
@@ -113,6 +93,36 @@ class HissEncryptor {
 
     public static boolean isHavingEncryptedContentPattern(String content) {
         return ENCTYPTED_CONTENT_PATTERN.matcher(content).find();
+    }
+
+    private String encrypt(EncryptorAndKey encryptorAndKey, String content) throws Exception {
+        var encryptor = encryptorAndKey.getEncryptor();
+        var key = encryptorAndKey.getKey();
+
+        var contentBytes = content.getBytes(CHARSET);
+        var encryptedBytes = encryptor.encrypt(key.getKey(), contentBytes);
+        return formatEncryptedBytes(encryptor.getName(), key.getId(), encryptedBytes);
+    }
+
+    private String decrypt(EncryptorAndKey encryptorAndKey, String content) throws Exception {
+        var encryptor = encryptorAndKey.getEncryptor();
+        var key = encryptorAndKey.getKey();
+
+        var contentBytes = Base64.getDecoder().decode(content);
+        var decryptedBytes = encryptor.decrypt(key.getKey(), contentBytes);
+        return new String(decryptedBytes, CHARSET);
+    }
+
+    private EncryptorAndKey getEncryptorAndKey(String algorithmName, String keyId) {
+        var encryptor = Objects.requireNonNull(encryptors.get(algorithmName), "Algorithm not supported: " + algorithmName);
+        var key = Objects.requireNonNull(keys.get(keyId), "Key not found: " + keyId);
+        return new EncryptorAndKey(encryptor, key);
+    }
+
+    @Value
+    private static class EncryptorAndKey {
+        Encryptor encryptor;
+        Key key;
     }
 
 }
