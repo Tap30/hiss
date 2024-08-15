@@ -41,7 +41,7 @@ public abstract class BaseHasherTest {
         var hash = hasher.hash(key, plainTextBytes);
 
         // Then
-        System.out.println(base64(hash));
+        System.out.printf("Base64 Encoded Hash of Content: %s\n", base64(hash));
         assertArrayEquals(hashedTextBytes, hash);
     }
 
