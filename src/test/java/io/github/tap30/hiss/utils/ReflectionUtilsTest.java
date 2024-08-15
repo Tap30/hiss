@@ -4,7 +4,8 @@ import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.InvocationTargetException;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class ReflectionUtilsTest {
 
@@ -15,7 +16,7 @@ class ReflectionUtilsTest {
         var nameGetterMethod = aClassInstance.getClass().getDeclaredMethod("getName");
 
         // When
-        var content = ReflectionUtils.invokeGetter(nameGetterMethod, aClassInstance, String.class);
+        var content = ReflectionUtils.invokeSupplier(aClassInstance, nameGetterMethod, String.class);
 
         // Then
         assertEquals("Mamad", content);
@@ -28,7 +29,7 @@ class ReflectionUtilsTest {
         var nameGetterMethod = aClassInstance.getClass().getDeclaredMethod("getName");
 
         // When & Then
-        assertThrows(ClassCastException.class, () -> ReflectionUtils.invokeGetter(nameGetterMethod, aClassInstance, Integer.class));
+        assertThrows(ClassCastException.class, () -> ReflectionUtils.invokeSupplier(aClassInstance, nameGetterMethod, Integer.class));
     }
 
     public static class AClass {
