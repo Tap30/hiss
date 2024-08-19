@@ -36,7 +36,7 @@ public abstract class BaseHasherTest {
     }
 
     @Test
-    void testHash() throws Exception {
+    void hash() throws Exception {
         // When
         var hash = hasher.hash(key, plainTextBytes);
 
@@ -46,7 +46,7 @@ public abstract class BaseHasherTest {
     }
 
     @Test
-    void testHash_producesSameHashForSameInput() throws Exception {
+    void hash_producesSameHashForSameInput() throws Exception {
         // When
         var hash1 = hasher.hash(key, plainTextBytes);
         var hash2 = hasher.hash(key, plainTextBytes);
@@ -59,7 +59,7 @@ public abstract class BaseHasherTest {
     }
 
     @Test
-    void testGetName() {
+    void getName() {
         assertEquals(hasherName, hasher.getName());
     }
 

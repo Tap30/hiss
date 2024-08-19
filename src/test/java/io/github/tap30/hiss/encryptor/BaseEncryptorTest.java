@@ -38,7 +38,7 @@ public abstract class BaseEncryptorTest {
     }
 
     @Test
-    void testEncrypt() throws Exception {
+    void encrypt() throws Exception {
         // When
         var encrypted = encryptor.encrypt(key, plainTextBytes);
 
@@ -48,7 +48,7 @@ public abstract class BaseEncryptorTest {
     }
 
     @Test
-    void testDecrypt() throws Exception {
+    void decrypt() throws Exception {
         // When
         var plain = encryptor.decrypt(key, encryptedTextBytes);
 
@@ -57,7 +57,7 @@ public abstract class BaseEncryptorTest {
     }
 
     @Test
-    void testEncryptAndDecrypt() throws Exception {
+    void encryptAndDecrypt() throws Exception {
         // When
         var encrypted = encryptor.encrypt(key, plainTextBytes);
         var plain = encryptor.decrypt(key, encrypted);
@@ -67,7 +67,7 @@ public abstract class BaseEncryptorTest {
     }
 
     @Test
-    void testGetName() {
+    void getName() {
         assertEquals(encryptorName, encryptor.getName());
     }
 

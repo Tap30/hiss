@@ -25,7 +25,7 @@ class HissPropertiesValidatorTest {
     );
 
     @Test
-    void testConstructor_whenConstructionArgumentsAreNull() {
+    void constructor_whenConstructionArgumentsAreNull() {
         assertThrows(NullPointerException.class,
                 () -> new HissPropertiesValidator(null, Map.of(), Map.of()));
         assertThrows(NullPointerException.class,
@@ -37,7 +37,7 @@ class HissPropertiesValidatorTest {
     // Keys Validation
 
     @Test
-    void testValidate_whenPropertiesAreValid() {
+    void validate_whenPropertiesAreValid() {
         // Given
         var properties = createValidProperties();
 
@@ -46,7 +46,7 @@ class HissPropertiesValidatorTest {
     }
 
     @Test
-    void testValidate_whenKeysAreEmpty() {
+    void validate_whenKeysAreEmpty() {
         // Given
         var properties = spy(createValidProperties());
         doReturn(Map.of()).when(properties).getKeys();
@@ -56,7 +56,7 @@ class HissPropertiesValidatorTest {
     }
 
     @Test
-    void testValidate_whenKeysHaveAKeyWithoutName() {
+    void validate_whenKeysHaveAKeyWithoutName() {
         // Given
         var properties = spy(createValidProperties());
         var keys = new HashMap<String, Key>();
@@ -68,7 +68,7 @@ class HissPropertiesValidatorTest {
     }
 
     @Test
-    void testValidate_whenKeyBytesAreEmpty() {
+    void validate_whenKeyBytesAreEmpty() {
         // Given
         var properties = spy(createValidProperties());
         doReturn(Map.of("default_key", Key.builder().build())).when(properties).getKeys();
@@ -78,7 +78,7 @@ class HissPropertiesValidatorTest {
     }
 
     @Test
-    void testValidate_whenKeyHashIsNotCorrect() {
+    void validate_whenKeyHashIsNotCorrect() {
         // Given
         var properties = createValidProperties();
         doReturn(Set.of("default_key")).when(keyHashGenerator).validateKeyHashes(any());
@@ -90,7 +90,7 @@ class HissPropertiesValidatorTest {
     // Default Encryption Key and Algorithm Validation
 
     @Test
-    void testValidate_whenDefaultEncryptionKeyIdIsMissing() {
+    void validate_whenDefaultEncryptionKeyIdIsMissing() {
         // Given
         var properties = spy(createValidProperties());
         doReturn(null).when(properties).getDefaultEncryptionKeyId();
@@ -100,7 +100,7 @@ class HissPropertiesValidatorTest {
     }
 
     @Test
-    void testValidate_whenDefaultEncryptionKeyIdIsInvalid() {
+    void validate_whenDefaultEncryptionKeyIdIsInvalid() {
         // Given
         var properties = spy(createValidProperties());
         doReturn("some unknown key").when(properties).getDefaultEncryptionKeyId();
@@ -110,7 +110,7 @@ class HissPropertiesValidatorTest {
     }
 
     @Test
-    void testValidate_whenDefaultEncryptionAlgorithmIsMissing() {
+    void validate_whenDefaultEncryptionAlgorithmIsMissing() {
         // Given
         var properties = spy(createValidProperties());
         doReturn(null).when(properties).getDefaultEncryptionAlgorithm();
@@ -120,7 +120,7 @@ class HissPropertiesValidatorTest {
     }
 
     @Test
-    void testValidate_whenDefaultEncryptionAlgorithmIsInvalid() {
+    void validate_whenDefaultEncryptionAlgorithmIsInvalid() {
         // Given
         var properties = spy(createValidProperties());
         doReturn("some unknown algorithm").when(properties).getDefaultEncryptionAlgorithm();
@@ -132,7 +132,7 @@ class HissPropertiesValidatorTest {
     // Default Hashing Key and Algorithm Validation
 
     @Test
-    void testValidate_whenDefaultHashingKeyIdIsMissing() {
+    void validate_whenDefaultHashingKeyIdIsMissing() {
         // Given
         var properties = spy(createValidProperties());
         doReturn(null).when(properties).getDefaultHashingKeyId();
@@ -142,7 +142,7 @@ class HissPropertiesValidatorTest {
     }
 
     @Test
-    void testValidate_whenDefaultHashingKeyIdIsInvalid() {
+    void validate_whenDefaultHashingKeyIdIsInvalid() {
         // Given
         var properties = spy(createValidProperties());
         doReturn("some unknown key").when(properties).getDefaultHashingKeyId();
@@ -152,7 +152,7 @@ class HissPropertiesValidatorTest {
     }
 
     @Test
-    void testValidate_whenDefaultHashingAlgorithmIsMissing() {
+    void validate_whenDefaultHashingAlgorithmIsMissing() {
         // Given
         var properties = spy(createValidProperties());
         doReturn(null).when(properties).getDefaultHashingAlgorithm();
@@ -162,7 +162,7 @@ class HissPropertiesValidatorTest {
     }
 
     @Test
-    void testValidate_whenDefaultHashingAlgorithmIsInvalid() {
+    void validate_whenDefaultHashingAlgorithmIsInvalid() {
         // Given
         var properties = spy(createValidProperties());
         doReturn("some unknown algorithm").when(properties).getDefaultHashingAlgorithm();

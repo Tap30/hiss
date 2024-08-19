@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class EncryptedInsideAnnotationOnSimpleObjectTest extends BaseHissTest {
 
     @Test
-    void testEncryptAndDecryptDomainObject() {
+    void encryptAndDecryptDomainObject() {
         // Given
         var latlng = new LatLng();
         latlng.setLat("31.3");

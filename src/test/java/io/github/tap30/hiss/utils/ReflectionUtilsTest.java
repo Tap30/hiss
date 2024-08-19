@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class ReflectionUtilsTest {
 
     @Test
-    void testInvokeSupplierMethod() throws NoSuchMethodException {
+    void invokeSupplierMethod() throws NoSuchMethodException {
         // Given
         var aClassInstance = new AClass();
         var nameGetterMethod = aClassInstance.getClass().getDeclaredMethod("getName");
@@ -21,7 +21,7 @@ class ReflectionUtilsTest {
     }
 
     @Test
-    void testInvokeSupplierMethod_whenTypeNotMatches() throws NoSuchMethodException {
+    void invokeSupplierMethod_whenTypeNotMatches() throws NoSuchMethodException {
         // Given
         var aClassInstance = new AClass();
         var nameGetterMethod = aClassInstance.getClass().getDeclaredMethod("getName");

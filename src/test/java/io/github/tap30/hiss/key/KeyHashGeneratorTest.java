@@ -18,7 +18,7 @@ class KeyHashGeneratorTest {
     KeyHashGenerator keyHashGenerator = new KeyHashGenerator(hasher, verifier);
 
     @Test
-    void testGenerateHashes() {
+    void generateHashes() {
         // Given
         var keys = Set.of(
                 Key.builder().id("key1").key(new byte[]{1, 2, 3}).build(),
@@ -36,7 +36,7 @@ class KeyHashGeneratorTest {
     }
 
     @Test
-    void testValidateKeyHashes() {
+    void validateKeyHashes() {
         // Given
         var keys = Set.of(
                 Key.builder()
@@ -59,7 +59,7 @@ class KeyHashGeneratorTest {
     }
 
     @Test
-    void testValidateKeyHashes_whenKeyHashesAreInvalid() {
+    void validateKeyHashes_whenKeyHashesAreInvalid() {
         // Given
         var keys = Set.of(
                 Key.builder()
@@ -84,7 +84,7 @@ class KeyHashGeneratorTest {
     }
 
     @Test
-    void testGenerateAndLogAllHashes() {
+    void generateAndLogAllHashes() {
         // Given
         var keys = Set.<Key>of();
         var keyHashGenerator = spy(this.keyHashGenerator);
