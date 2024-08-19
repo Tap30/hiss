@@ -181,7 +181,7 @@ class HissObjectEncryptor {
         }
 
         public String getContent(Object object) {
-            return ReflectionUtils.invokeSupplier(object, getter, String.class);
+            return ReflectionUtils.invokeSupplierMethod(object, getter, String.class);
         }
 
         public void setContent(Object object, String content) {
@@ -202,7 +202,7 @@ class HissObjectEncryptor {
         }
 
         public Object getContent(Object object) {
-            return ReflectionUtils.invokeSupplier(object, getter, Object.class);
+            return ReflectionUtils.invokeSupplierMethod(object, getter, Object.class);
         }
 
     }

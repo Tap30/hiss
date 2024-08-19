@@ -10,7 +10,7 @@ import java.util.List;
 
 public class ReflectionUtils {
 
-    public static <T> T invokeSupplier(Object object, Method supplier, Class<T> targetType) {
+    public static <T> T invokeSupplierMethod(Object object, Method supplier, Class<T> targetType) {
         Object content;
         try {
             content = supplier.invoke(object);
