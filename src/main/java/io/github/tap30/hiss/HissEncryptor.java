@@ -86,12 +86,12 @@ class HissEncryptor {
         return isHavingEncryptedContentPattern(content);
     }
 
-    public static String formatEncryptedBytes(String algorithmName, String keyId, byte[] bytes) {
+    static String formatEncryptedBytes(String algorithmName, String keyId, byte[] bytes) {
         var base64Encoded = Base64.getEncoder().encodeToString(bytes);
         return "#$$#{" + algorithmName + ":" + keyId + "}{" + base64Encoded + "}#$$#";
     }
 
-    public static boolean isHavingEncryptedContentPattern(String content) {
+    static boolean isHavingEncryptedContentPattern(String content) {
         return ENCTYPTED_CONTENT_PATTERN.matcher(content).find();
     }
 
