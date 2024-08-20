@@ -10,11 +10,10 @@ import java.util.List;
 
 public class ReflectionUtils {
 
-
-    public static <T> T invokeGetter(Method getter, Object object, Class<T> targetType) {
+    public static <T> T invokeSupplierMethod(Object object, Method supplier, Class<T> targetType) {
         Object content;
         try {
-            content = getter.invoke(object);
+            content = supplier.invoke(object);
         } catch (IllegalAccessException | InvocationTargetException e) {
             throw new RuntimeException(e);
         }
@@ -27,19 +26,29 @@ public class ReflectionUtils {
             return castedContent;
         } else {
             throw new ClassCastException(String.format(
-                    "Cast error for content of method %s: wanted %s but got %s", getter.getName(), targetType.getName(), content.getClass().getName()
+                    "Cast error for content of method %s: wanted %s but got %s",
+                    supplier.getName(), targetType.getName(), content.getClass().getName()
             ));
         }
     }
 
     public static List<Field> getAllFields(Class<?> clazz) {
         var objectFields = new ArrayList<Field>();
-        Class<?> objectClass = clazz;
-        while (objectClass != null) {
+        for (var objectClass = clazz; objectClass != null; objectClass = objectClass.getSuperclass()) {
             objectFields.addAll(Arrays.asList(objectClass.getDeclaredFields()));
-            objectClass = objectClass.getSuperclass();
         }
         return Collections.unmodifiableList(objectFields);
+    }
+
+    public static Method getMethod(Class<?> clazz, String methodName, Class<?>... parameterTypes) {
+        try {
+            return clazz.getDeclaredMethod(methodName, parameterTypes);
+        } catch (NoSuchMethodException e) {
+            if (clazz.getSuperclass() != null) {
+                return getMethod(clazz.getSuperclass(), methodName, parameterTypes);
+            }
+            throw new RuntimeException(e);
+        }
     }
 
 }

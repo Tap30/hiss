@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class HissFactoryTest {
 
     @Test
-    void testCreateHiss() {
+    void createHiss() {
         // Given
         var properties = new HissProperties() {
 
@@ -63,7 +63,7 @@ class HissFactoryTest {
     }
 
     @Test
-    void testCreateHiss_shouldPropertiesBeingValidated() {
+    void createHiss_shouldPropertiesBeingValidated() {
         assertThrows(IllegalArgumentException.class, () ->
                 HissFactory.createHiss(new HissProperties() {
                     @Override

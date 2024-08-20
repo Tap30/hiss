@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 public class EncryptedInsideAnnotationOnListAndSetTest extends BaseHissTest {
 
     @Test
-    void testEncryptAndDecryptDomainObject() {
+    void encryptAndDecryptDomainObject() {
         // Given
 
         var user = User.builder()
