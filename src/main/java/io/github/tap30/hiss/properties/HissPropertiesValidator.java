@@ -53,7 +53,8 @@ public class HissPropertiesValidator {
         if (!StringUtils.hasText(hissProperties.getDefaultEncryptionKeyId())) {
             errors.add("Default encryption key ID is not defined");
         }
-        if (!hissProperties.getKeys().containsKey(hissProperties.getDefaultEncryptionKeyId())) {
+        if (hissProperties.getKeys() != null
+                && !hissProperties.getKeys().containsKey(hissProperties.getDefaultEncryptionKeyId())) {
             errors.add("Default encryption key ID is not among provided keys: " + hissProperties.getKeys().keySet());
         }
         if (!StringUtils.hasText(hissProperties.getDefaultEncryptionAlgorithm())) {
@@ -67,7 +68,8 @@ public class HissPropertiesValidator {
         if (!StringUtils.hasText(hissProperties.getDefaultHashingKeyId())) {
             errors.add("Default hashing key ID is not defined");
         }
-        if (!hissProperties.getKeys().containsKey(hissProperties.getDefaultHashingKeyId())) {
+        if (hissProperties.getKeys() != null
+                && !hissProperties.getKeys().containsKey(hissProperties.getDefaultHashingKeyId())) {
             errors.add("Default hashing key ID is not among provided keys: " + hissProperties.getKeys().keySet());
         }
         if (!StringUtils.hasText(hissProperties.getDefaultHashingAlgorithm())) {

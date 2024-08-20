@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(SystemStubsExtension.class)
-class HissPropertiesFromEnvTest {
+class HissPropertiesFromEnvProviderTest {
 
     @SystemStub
     EnvironmentVariables environment = new EnvironmentVariables(
@@ -30,7 +30,7 @@ class HissPropertiesFromEnvTest {
     @Test
     void test() {
         // Given & When
-        var hissProperties = new HissPropertiesFromEnv();
+        var hissProperties = HissProperties.fromEnv();
 
         // Then
         assertEquals(2, hissProperties.getKeys().size());

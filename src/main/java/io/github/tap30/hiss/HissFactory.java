@@ -11,6 +11,7 @@ import io.github.tap30.hiss.hasher.impl.HmacSha256Hasher;
 import io.github.tap30.hiss.hasher.impl.TapsiHmacSha256Hasher;
 import io.github.tap30.hiss.key.KeyHashGenerator;
 import io.github.tap30.hiss.properties.HissProperties;
+import io.github.tap30.hiss.properties.HissPropertiesProvider;
 import io.github.tap30.hiss.properties.HissPropertiesValidator;
 import org.jetbrains.annotations.NotNull;
 
@@ -27,14 +28,13 @@ public class HissFactory {
      * Creates a Hiss instance with provided <code>HissProperties</code> and default encryptors and hashers.
      *
      * @param hissProperties the properties by which hiss will be instantiated;
-     *                       {@link io.github.tap30.hiss.properties.HissPropertiesFromEnv}
-     *                       or any custom implementation of
-     *                       {@link io.github.tap30.hiss.properties.HissProperties}
-     *                       can be used.
+     *                       use {@link HissProperties#fromEnv()}
+     *                       or {@link HissProperties#builder()}
+     *                       or {@link HissProperties#withProvider(HissPropertiesProvider)}
      * @return {@link Hiss} instance.
      * @throws IllegalArgumentException if the properties are not valid.
      */
-    public static Hiss createHiss(HissProperties hissProperties) {
+    public static Hiss createHiss(@NotNull HissProperties hissProperties) {
         return createHiss(hissProperties, Set.of(), Set.of());
     }
 
@@ -44,18 +44,17 @@ public class HissFactory {
      * Provided encryptors and hashers will be added alongside default ones.
      *
      * @param hissProperties the properties by which hiss will be instantiated;
-     *                       {@link io.github.tap30.hiss.properties.HissPropertiesFromEnv}
-     *                       or any custom implementation of
-     *                       {@link io.github.tap30.hiss.properties.HissProperties}
-     *                       can be used.
-     * @param encryptors custom {@link Encryptor} implementations. Can be empty but not null.
-     * @param hashers custom {@link Hasher} implementations. Can be empty but not null.
+     *                       use {@link HissProperties#fromEnv()}
+     *                       or {@link HissProperties#builder()}
+     *                       or {@link HissProperties#withProvider(HissPropertiesProvider)}
+     * @param encryptors     custom {@link Encryptor} implementations. Can be empty but not null.
+     * @param hashers        custom {@link Hasher} implementations. Can be empty but not null.
      * @return {@link Hiss} instance.
      * @throws IllegalArgumentException if the properties are not valid.
      */
-    public static Hiss createHiss(HissProperties hissProperties,
-                                  Set<Encryptor> encryptors,
-                                  Set<Hasher> hashers) {
+    public static Hiss createHiss(@NotNull HissProperties hissProperties,
+                                  @NotNull Set<Encryptor> encryptors,
+                                  @NotNull Set<Hasher> hashers) {
         Objects.requireNonNull(hissProperties);
         Objects.requireNonNull(encryptors);
         Objects.requireNonNull(hashers);
@@ -109,8 +108,8 @@ public class HissFactory {
     }
 
     private static void logInitializingHiss(HissProperties hissProperties,
-                                     Map<String, Encryptor> encryptors,
-                                     Map<String, Hasher> hashers) {
+                                            Map<String, Encryptor> encryptors,
+                                            Map<String, Hasher> hashers) {
         logger.log(Level.INFO, "Hiss initialized:\n" +
                         "  Loaded Keys: {0}\n" +
                         "  Default Encryption Key ID: {1}\n" +
