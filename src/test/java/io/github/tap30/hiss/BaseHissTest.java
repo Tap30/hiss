@@ -1,6 +1,6 @@
 package io.github.tap30.hiss;
 
-import io.github.tap30.hiss.properties.HissPropertiesFromEnv;
+import io.github.tap30.hiss.properties.HissProperties;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import uk.org.webcompere.systemstubs.environment.EnvironmentVariables;
@@ -24,8 +24,7 @@ public class BaseHissTest {
 
     @BeforeEach
     void setUpHiss() {
-        var hissPropertiesFromEnv = new HissPropertiesFromEnv();
-        hiss = HissFactory.createHiss(hissPropertiesFromEnv);
+        hiss = HissFactory.createHiss(HissProperties.fromEnv());
     }
 
 }

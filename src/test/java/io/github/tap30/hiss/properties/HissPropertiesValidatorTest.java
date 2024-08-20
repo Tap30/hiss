@@ -172,41 +172,18 @@ class HissPropertiesValidatorTest {
     }
 
     HissProperties createValidProperties() {
-        return new HissProperties() {
-            @Override
-            protected Set<Key> loadKeys() {
-                return Set.of(Key.builder()
+        return HissProperties.builder()
+                .keys(Set.of(Key.builder()
                         .id("default_key")
                         .key(Base64.getDecoder().decode("AAAAAAAAAAAAAAAAAAAAAA=="))
                         .keyHash("$2a$12$3T0VMnGMgvesehYomommnO02dbFOJuM/3elsmgmsB2/qlGSF3BIbe")
-                        .build());
-            }
-
-            @Override
-            protected String loadDefaultEncryptionKeyId() {
-                return "default_key";
-            }
-
-            @Override
-            protected String loadDefaultEncryptionAlgorithm() {
-                return "aes-128-gcm";
-            }
-
-            @Override
-            protected String loadDefaultHashingKeyId() {
-                return "default_key";
-            }
-
-            @Override
-            protected String loadDefaultHashingAlgorithm() {
-                return "hmac-sha256";
-            }
-
-            @Override
-            protected boolean loadKeyHashGenerationEnabled() {
-                return true;
-            }
-        };
+                        .build()))
+                .defaultEncryptionKeyId("default_key")
+                .defaultEncryptionAlgorithm("aes-128-gcm")
+                .defaultHashingKeyId("default_key")
+                .defaultHashingAlgorithm("hmac-sha256")
+                .keyHashGenerationEnabled(false)
+                .build();
     }
 
 }

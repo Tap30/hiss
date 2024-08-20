@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Supplier;
 
-// Todo: import doc
+// Todo: improve doc
 /**
  * Sample Envs:
  * <br>
@@ -26,7 +26,7 @@ import java.util.function.Supplier;
  * HISS_DEFAULT_HASHING_ALGORITHM: hmac-sha256
  * </code>
  */
-public class HissPropertiesFromEnv extends HissProperties {
+public class HissPropertiesFromEnvProvider implements HissPropertiesProvider {
 
     private static final String KEY_ENV_PREFIX = "HISS_KEYS_";
     private static final String KEY_HASH_ENV_POSTFIX = "___HASH";
@@ -34,7 +34,7 @@ public class HissPropertiesFromEnv extends HissProperties {
     private static final Supplier<Map<String, String>> ENV_PROVIDER = System::getenv;
 
     @Override
-    public Set<Key> loadKeys() {
+    public Set<Key> getKeys() {
         var keys = new HashSet<Key>();
         ENV_PROVIDER.get().forEach((k, v) -> {
             if (k.startsWith(KEY_ENV_PREFIX) && !k.endsWith(KEY_HASH_ENV_POSTFIX)) {
@@ -49,27 +49,28 @@ public class HissPropertiesFromEnv extends HissProperties {
     }
 
     @Override
-    public String loadDefaultEncryptionKeyId() {
+    public String getDefaultEncryptionKeyId() {
         return ENV_PROVIDER.get().get("HISS_DEFAULT_ENCRYPTION_KEY_ID");
     }
 
     @Override
-    public String loadDefaultEncryptionAlgorithm() {
+    public String getDefaultEncryptionAlgorithm() {
         return ENV_PROVIDER.get().get("HISS_DEFAULT_ENCRYPTION_ALGORITHM");
     }
 
     @Override
-    public String loadDefaultHashingKeyId() {
+    public String getDefaultHashingKeyId() {
         return ENV_PROVIDER.get().get("HISS_DEFAULT_HASHING_KEY_ID");
     }
 
     @Override
-    public String loadDefaultHashingAlgorithm() {
+    public String getDefaultHashingAlgorithm() {
         return ENV_PROVIDER.get().get("HISS_DEFAULT_HASHING_ALGORITHM");
     }
 
     @Override
-    protected boolean loadKeyHashGenerationEnabled() {
+    public boolean isKeyHashGenerationEnabled() {
         return Boolean.parseBoolean(ENV_PROVIDER.get().get("HISS_KEY_HASH_GENERATION_ENABLED"));
     }
+
 }

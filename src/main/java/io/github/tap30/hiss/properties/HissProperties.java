@@ -2,74 +2,73 @@ package io.github.tap30.hiss.properties;
 
 import io.github.tap30.hiss.key.Key;
 import io.github.tap30.hiss.utils.StringUtils;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Value;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-public abstract class HissProperties {
+@Builder
+@Value
+@AllArgsConstructor(access = AccessLevel.PACKAGE)
+public class HissProperties {
 
-    private final Map<String, Object> properties = new HashMap<>();
+    Map<String, Key> keys;
+    String defaultEncryptionKeyId;
+    String defaultEncryptionAlgorithm;
+    String defaultHashingKeyId;
+    String defaultHashingAlgorithm;
+    boolean keyHashGenerationEnabled;
 
-    public Map<String, Key> getKeys() {
-        return this.getProperty("Keys", this::loadKeys, HissProperties::keysAsMap);
+    /**
+     * See {@link HissPropertiesFromEnvProvider}.
+     */
+    public static HissProperties fromEnv() {
+        return withProvider(new HissPropertiesFromEnvProvider());
     }
 
-    public String getDefaultEncryptionKeyId() {
-        return this.getProperty("DefaultEncryptionKeyId",
-                this::loadDefaultEncryptionKeyId, StringUtils::toLowerCase);
+    public static HissProperties withProvider(HissPropertiesProvider provider) {
+        return builder()
+                .keys(provider.getKeys())
+                .defaultEncryptionKeyId(provider.getDefaultEncryptionKeyId())
+                .defaultEncryptionAlgorithm(provider.getDefaultEncryptionAlgorithm())
+                .defaultHashingKeyId(provider.getDefaultHashingKeyId())
+                .defaultHashingAlgorithm(provider.getDefaultHashingAlgorithm())
+                .keyHashGenerationEnabled(provider.isKeyHashGenerationEnabled())
+                .build();
     }
 
-    public String getDefaultEncryptionAlgorithm() {
-        return this.getProperty("DefaultEncryptionAlgorithm",
-                this::loadDefaultEncryptionAlgorithm, StringUtils::toLowerCase);
-    }
-
-    public String getDefaultHashingKeyId() {
-        return this.getProperty("DefaultHashingKeyId",
-                this::loadDefaultHashingKeyId, StringUtils::toLowerCase);
-    }
-
-    public String getDefaultHashingAlgorithm() {
-        return this.getProperty("DefaultHashingAlgorithm",
-                this::loadDefaultHashingAlgorithm, StringUtils::toLowerCase);
-    }
-
-    public boolean isKeyHashGenerationEnabled() {
-        return this.getProperty("KeyHashGenerationEnabled", this::loadKeyHashGenerationEnabled);
-    }
-
-    protected abstract Set<Key> loadKeys();
-
-    protected abstract String loadDefaultEncryptionKeyId();
-
-    protected abstract String loadDefaultEncryptionAlgorithm();
-
-    protected abstract String loadDefaultHashingKeyId();
-
-    protected abstract String loadDefaultHashingAlgorithm();
-
-    protected abstract boolean loadKeyHashGenerationEnabled();
-
-    private <O> O getProperty(String key, Supplier<O> valueSupplier) {
-        return getProperty(key, valueSupplier, v -> v);
-    }
-
-    @SuppressWarnings("unchecked")
-    private <I, O> O getProperty(String key, Supplier<I> valueSupplier, Function<I, O> mapper) {
-        if (this.properties.containsKey(key)) {
-            return (O) this.properties.get(key);
+    public static class HissPropertiesBuilder {
+        public HissPropertiesBuilder keys(Set<Key> keys) {
+            this.keys = keys.stream()
+                    .collect(Collectors.toMap(k -> StringUtils.toLowerCase(k.getId()), Function.identity()));
+            return this;
         }
-        var value = mapper.apply(valueSupplier.get());
-        this.properties.put(key, value);
-        return value;
+
+        public HissPropertiesBuilder defaultEncryptionKeyId(String defaultEncryptionKeyId) {
+            this.defaultEncryptionKeyId = StringUtils.toLowerCase(defaultEncryptionKeyId);
+            return this;
+        }
+
+        public HissPropertiesBuilder defaultEncryptionAlgorithm(String defaultEncryptionAlgorithm) {
+            this.defaultEncryptionAlgorithm = StringUtils.toLowerCase(defaultEncryptionAlgorithm);
+            return this;
+        }
+
+        public HissPropertiesBuilder defaultHashingKeyId(String defaultHashingKeyId) {
+            this.defaultHashingKeyId = StringUtils.toLowerCase(defaultHashingKeyId);
+            return this;
+        }
+
+        public HissPropertiesBuilder defaultHashingAlgorithm(String defaultHashingAlgorithm) {
+            this.defaultHashingAlgorithm = StringUtils.toLowerCase(defaultHashingAlgorithm);
+            return this;
+        }
     }
 
-    private static Map<String, Key> keysAsMap(Set<Key> keys) {
-        return keys.stream().collect(Collectors.toMap(k -> StringUtils.toLowerCase(k.getId()), k -> k));
-    }
 
 }
