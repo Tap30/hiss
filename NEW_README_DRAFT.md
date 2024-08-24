@@ -14,6 +14,8 @@ It can also calculate hashes of those fields by which you can query on them.
   * Creating Hiss Instance
   * Annotating Fields
   * Encrypting Object
+* Introduction (?)
+  * Motivation (?)
 * Hiss Annotations
   * `@Encrypted`
   * `@EncryptedInside`
