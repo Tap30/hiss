@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class EncryptedAnnotationTest extends BaseHissTest {
 
     @Test
-    void testEncryptAndDecryptDomainObject() throws Exception {
+    void encryptAndDecryptDomainObject() throws Exception {
         // Given
         var aClassWithEncryptedAnnotationObject = new AClassWithEncryptedAnnotation();
         aClassWithEncryptedAnnotationObject.setNormalField("normal field");

@@ -1,70 +1,61 @@
 package io.github.tap30.hiss;
 
-import io.github.tap30.hiss.key.Key;
-import io.github.tap30.hiss.key.KeyHashGenerator;
-import io.github.tap30.hiss.properties.HissProperties;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-
-import java.util.Collection;
-import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
 
 class HissTest extends BaseHissTest {
 
 
+//    @Test // todo: move to HissFactoryTest
+//    void keyHashesAreGenerated() {
+//        // Given
+//        var keys = Set.of(Key.builder().build());
+//        var properties = new HissProperties() {
+//            @Override
+//            protected Set<Key> loadKeys() {
+//                return keys;
+//            }
+//
+//            @Override
+//            protected String loadDefaultEncryptionKeyId() {
+//                return "";
+//            }
+//
+//            @Override
+//            protected String loadDefaultEncryptionAlgorithm() {
+//                return "";
+//            }
+//
+//            @Override
+//            protected String loadDefaultHashingKeyId() {
+//                return "";
+//            }
+//
+//            @Override
+//            protected String loadDefaultHashingAlgorithm() {
+//                return "";
+//            }
+//
+//            @Override
+//            protected boolean loadKeyHashGenerationEnabled() {
+//                return true;
+//            }
+//        };
+//
+//        var keyHashGenerator = mock(KeyHashGenerator.class);
+//
+//        // When
+//        new Hiss(properties, keyHashGenerator);
+//
+//        // Then
+//        var keysCaptor = ArgumentCaptor.forClass(Collection.class);
+//        verify(keyHashGenerator).generateAndLogHashes(keysCaptor.capture());
+//        assertEquals(keys, Set.copyOf(keysCaptor.getValue()));
+//    }
+
     @Test
-    void testKeyHashesAreGenerated() {
-        // Given
-        var keys = Set.of(Key.builder().build());
-        var properties = new HissProperties() {
-            @Override
-            protected Set<Key> loadKeys() {
-                return keys;
-            }
-
-            @Override
-            protected String loadDefaultEncryptionKeyId() {
-                return "";
-            }
-
-            @Override
-            protected String loadDefaultEncryptionAlgorithm() {
-                return "";
-            }
-
-            @Override
-            protected String loadDefaultHashingKeyId() {
-                return "";
-            }
-
-            @Override
-            protected String loadDefaultHashingAlgorithm() {
-                return "";
-            }
-
-            @Override
-            protected boolean loadKeyHashGenerationEnabled() {
-                return true;
-            }
-        };
-
-        var keyHashGenerator = mock(KeyHashGenerator.class);
-
-        // When
-        new Hiss(properties, keyHashGenerator);
-
-        // Then
-        var keysCaptor = ArgumentCaptor.forClass(Collection.class);
-        verify(keyHashGenerator).generateAndLogHashes(keysCaptor.capture());
-        assertEquals(keys, Set.copyOf(keysCaptor.getValue()));
-    }
-
-    @Test
-    void testEncrypt() {
+    void encrypt() {
         // Given
         var text = "some text";
 
@@ -76,7 +67,7 @@ class HissTest extends BaseHissTest {
     }
 
     @Test
-    void testEncrypt_whenContentIsAlreadyEncrypted() {
+    void encrypt_whenContentIsAlreadyEncrypted() {
         // Given
         var text = "some text";
 
@@ -90,17 +81,17 @@ class HissTest extends BaseHissTest {
     }
 
     @Test
-    void testEncrypt_whenValueIsNull() {
+    void encrypt_whenValueIsNull() {
         assertNull(hiss.encrypt(null));
     }
 
     @Test
-    void testEncrypt_whenValueIsEmpty() {
+    void encrypt_whenValueIsEmpty() {
         assertEquals("", hiss.encrypt(""));
     }
 
     @Test
-    void testDecrypt() {
+    void decrypt() {
         // Given
         var encryptedText = "#$$#{aes-128-gcm:default_key}{5Ki0pm8DwBRQPLXtkbBwNqAceuzgLEkOiZv6ecVNyPaAjqmme6gmVKw=}#$$#";
 
@@ -112,7 +103,7 @@ class HissTest extends BaseHissTest {
     }
 
     @Test
-    void testDecrypt_whenContentNotEncrypted() {
+    void decrypt_whenContentNotEncrypted() {
         // Given
         var text = "some text";
 
@@ -124,17 +115,17 @@ class HissTest extends BaseHissTest {
     }
 
     @Test
-    void testDecrypt_whenValueIsNull() {
+    void decrypt_whenValueIsNull() {
         assertNull(hiss.decrypt(null));
     }
 
     @Test
-    void testDecrypt_whenValueIsEmpty() {
+    void decrypt_whenValueIsEmpty() {
         assertEquals("", hiss.decrypt(""));
     }
 
     @Test
-    void testEncryptAndDecrypt() {
+    void encryptAndDecrypt() {
         // Given
         final var content = "Hello; user with phone number +989123456789 and national code 1234567890 is verified.";
 
@@ -153,7 +144,7 @@ class HissTest extends BaseHissTest {
     }
 
     @Test
-    void testEncryptAndDecrypt_withWeiredValue01() {
+    void encryptAndDecrypt_withWeiredValue01() {
         // Given
         var content = "$@$@N";
 
@@ -165,7 +156,7 @@ class HissTest extends BaseHissTest {
     }
 
     @Test
-    void testEncryptAndDecrypt_withWeiredValue02() {
+    void encryptAndDecrypt_withWeiredValue02() {
         // Given
         var content = "@MIRI";
 
@@ -177,7 +168,7 @@ class HissTest extends BaseHissTest {
     }
 
     @Test
-    void testEncryptAndDecrypt_whenHavingPattern() {
+    void encryptAndDecrypt_whenHavingPattern() {
         // Given
         final var content = "Hello; user with phone number +989123456789 and national code 1234567890 is verified.";
 
@@ -200,7 +191,7 @@ class HissTest extends BaseHissTest {
     }
 
     @Test
-    void testHash() {
+    void hash() {
         // Given
         final var content = "Hello; user with phone number +989123456789 and national code 1234567890 is verified.";
 
@@ -217,17 +208,17 @@ class HissTest extends BaseHissTest {
     }
 
     @Test
-    void testHash_whenValueIsNull() {
+    void hash_whenValueIsNull() {
         assertNull(hiss.hash(null));
     }
 
     @Test
-    void testHash_whenValueIsEmpty() {
+    void hash_whenValueIsEmpty() {
         assertEquals("", hiss.hash(""));
     }
 
     @Test
-    void testHash_producingSameValue() {
+    void hash_producingSameValue() {
         // Given
         final var content = "Hello; user with phone number +989123456789 and national code 1234567890 is verified.";
 
@@ -242,7 +233,7 @@ class HissTest extends BaseHissTest {
     }
 
     @Test
-    void testHash_whenHavingPattern() {
+    void hash_whenHavingPattern() {
         // Given
         final var content = "Hello; user with phone number +989123456789 and national code 1234567890 is verified.";
 

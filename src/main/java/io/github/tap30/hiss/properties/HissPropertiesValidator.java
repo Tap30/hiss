@@ -1,24 +1,26 @@
 package io.github.tap30.hiss.properties;
 
+import io.github.tap30.hiss.encryptor.Encryptor;
+import io.github.tap30.hiss.hasher.Hasher;
 import io.github.tap30.hiss.key.KeyHashGenerator;
 import io.github.tap30.hiss.utils.StringUtils;
 
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 
 public class HissPropertiesValidator {
 
-    private static final Set<String> SUPPORTED_ENCRYPTION_ALGORITHMS =
-            Set.of("aes-128-gcm", "aes-128-cbc"); // Todo: get these from algorithm spec
-    private static final Set<String> SUPPORTED_HASHING_ALGORITHMS =
-            Set.of("hmac-sha256"); // Todo: get this from algorithm spec
-
     private final KeyHashGenerator keyHashGenerator;
+    private final Map<String, Encryptor> encryptors;
+    private final Map<String, Hasher> hashers;
 
-    public HissPropertiesValidator(KeyHashGenerator keyHashGenerator) {
-        Objects.requireNonNull(keyHashGenerator);
-        this.keyHashGenerator = keyHashGenerator;
+    public HissPropertiesValidator(KeyHashGenerator keyHashGenerator,
+                                   Map<String, Encryptor> encryptors,
+                                   Map<String, Hasher> hashers) {
+        this.keyHashGenerator = Objects.requireNonNull(keyHashGenerator);
+        this.encryptors = Objects.requireNonNull(encryptors);
+        this.hashers = Objects.requireNonNull(hashers);
     }
 
     public void validate(HissProperties hissProperties) {
@@ -47,30 +49,32 @@ public class HissPropertiesValidator {
         }
     }
 
-    private static void validateDefaultEncryptionKeyAndAlgorithm(HissProperties hissProperties, ArrayList<String> errors) {
+    private void validateDefaultEncryptionKeyAndAlgorithm(HissProperties hissProperties, ArrayList<String> errors) {
         if (!StringUtils.hasText(hissProperties.getDefaultEncryptionKeyId())) {
             errors.add("Default encryption key ID is not defined");
         }
-        if (!hissProperties.getKeys().containsKey(hissProperties.getDefaultEncryptionKeyId())) {
+        if (hissProperties.getKeys() != null
+                && !hissProperties.getKeys().containsKey(hissProperties.getDefaultEncryptionKeyId())) {
             errors.add("Default encryption key ID is not among provided keys: " + hissProperties.getKeys().keySet());
         }
         if (!StringUtils.hasText(hissProperties.getDefaultEncryptionAlgorithm())) {
             errors.add("Default encryption algorithm is not defined");
-        } else if (!SUPPORTED_ENCRYPTION_ALGORITHMS.contains(hissProperties.getDefaultEncryptionAlgorithm())) {
+        } else if (!encryptors.containsKey(hissProperties.getDefaultEncryptionAlgorithm())) {
             errors.add("Encryption algorithm " + hissProperties.getDefaultEncryptionAlgorithm() + " is not supported");
         }
     }
 
-    private static void validateDefaultHashingKeyAndAlgorithm(HissProperties hissProperties, ArrayList<String> errors) {
+    private void validateDefaultHashingKeyAndAlgorithm(HissProperties hissProperties, ArrayList<String> errors) {
         if (!StringUtils.hasText(hissProperties.getDefaultHashingKeyId())) {
             errors.add("Default hashing key ID is not defined");
         }
-        if (!hissProperties.getKeys().containsKey(hissProperties.getDefaultHashingKeyId())) {
+        if (hissProperties.getKeys() != null
+                && !hissProperties.getKeys().containsKey(hissProperties.getDefaultHashingKeyId())) {
             errors.add("Default hashing key ID is not among provided keys: " + hissProperties.getKeys().keySet());
         }
         if (!StringUtils.hasText(hissProperties.getDefaultHashingAlgorithm())) {
             errors.add("Default hashing algorithm is not defined");
-        } else if (!SUPPORTED_HASHING_ALGORITHMS.contains(hissProperties.getDefaultHashingAlgorithm())) {
+        } else if (!hashers.containsKey(hissProperties.getDefaultHashingAlgorithm())) {
             errors.add("Hashing algorithm " + hissProperties.getDefaultHashingAlgorithm() + " is not supported");
         }
     }

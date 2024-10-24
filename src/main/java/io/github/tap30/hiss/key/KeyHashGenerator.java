@@ -34,7 +34,6 @@ public class KeyHashGenerator {
     }
 
     /**
-     * @param keys
      * @return map of key ID to key hash.
      */
     public Map<String, String> generateHashes(Collection<Key> keys) {
@@ -44,12 +43,20 @@ public class KeyHashGenerator {
     }
 
     /**
-     * @param keys
      * @return invalid key IDs.
      */
     public Set<String> validateKeyHashes(Collection<Key> keys) {
         return keys.stream()
-                .filter(key -> StringUtils.hasText(key.getKeyHash()))
+                .filter(key -> {
+                    if (StringUtils.hasText(key.getKeyHash())) {
+                        return true;
+                    } else {
+                        logger.log(Level.WARNING,
+                                "Key {0} does not have hash; supply it as soon as possible.",
+                                key.getId());
+                        return false;
+                    }
+                })
                 .filter(key -> !verifyer.verify(key.getKey(), key.getKeyHash().getBytes(CHARSET)).verified)
                 .map(Key::getId)
                 .collect(Collectors.toSet());
