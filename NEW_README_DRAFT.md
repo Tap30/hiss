@@ -16,16 +16,14 @@ This adds an extra layer of security, protecting user identities in case of a da
   * Creating Hiss Instance
   * Annotating Fields
   * Encrypting Object
-* Introduction (?)
-  * Motivation (?)
 * Hiss Annotations
   * `@Encrypted`
   * `@EncryptedInside`
 * Hiss Instantiation
+  * Hiss Properties
+    * Properties Provided in Code
+    * Properties Provided by Environment Variables
   * Key Validation
-* Hiss Properties
-  * Properties Provided in Code
-  * Properties Provided by Environment Variables
 * Hiss Encryption 
   * Partial Encryption
   * Supported Encryption Algorithms
