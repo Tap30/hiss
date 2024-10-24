@@ -6,8 +6,8 @@ which lets you encrypt and calculate hash of selected (annotated) fields of an o
 It is most useful when you want to persist or send an object which has sensitive fields.
 
 The motivation behind this project was we wanted to encrypt [personally identifiable information (PII)](https://en.wikipedia.org/wiki/Personal_data)
-of our users prior to persisting them in the database.
-This adds an extra layer of security, protecting user identities in case of a data breach or unauthorized access. 
+of our users prior to persisting them in the database that in case of
+a data breach or unauthorized access, user identities would be protected. 
 
 ## Contents
 
