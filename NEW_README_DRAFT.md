@@ -1,6 +1,6 @@
 # Hiss
 
-Hiss a Java/Kotlin field-level encryption and hashing library
+Hiss is a Java/Kotlin field-level encryption and hashing library
 which lets you encrypt and calculate hash of selected (annotated) fields of an object.
 
 It is most useful when you want to persist or send an object which has sensitive fields.
