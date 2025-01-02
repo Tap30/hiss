@@ -16,6 +16,7 @@ import io.github.tap30.hiss.properties.HissPropertiesValidator;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
+import java.util.function.Supplier;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -23,6 +24,8 @@ import java.util.stream.Collectors;
 public class HissFactory {
 
     private static final Logger logger = Logger.getLogger(HissFactory.class.getName());
+
+    static Supplier<KeyHashGenerator> keyHashGeneratorProvider = () -> new KeyHashGenerator(BCrypt.withDefaults(), BCrypt.verifyer());
 
     /**
      * Creates a Hiss instance with provided <code>HissProperties</code> and default encryptors and hashers.
@@ -64,7 +67,7 @@ public class HissFactory {
         var hashersMap = addDefaultHashers(hashers)
                 .stream().collect(Collectors.toMap(h -> h.getName().toLowerCase(), h -> h));
 
-        var keyHashGenerator = new KeyHashGenerator(BCrypt.withDefaults(), BCrypt.verifyer());
+        var keyHashGenerator = keyHashGeneratorProvider.get();
         new HissPropertiesValidator(keyHashGenerator, encryptorsMap, hashersMap).validate(hissProperties);
 
         var hissEncryptor = new HissEncryptor(

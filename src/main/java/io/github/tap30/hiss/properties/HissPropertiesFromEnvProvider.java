@@ -8,24 +8,37 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Supplier;
 
-// Todo: improve doc
-
 /**
- * Sample Envs:
+ * Provides {@link HissProperties} from environment variables.
  * <br>
- * <code>
- * HISS_KEYS_KEY1: AAAAAAAAAAAAAAAAAAAAAA==
+ * Here's the mapping of the <code>HissProperties</code> field to environment variables:
  * <br>
- * HISS_KEYS_KEY2: AAAAAAAAAAAAAAAAAAAAAA==
- * <br>
- * HISS_DEFAULT_ENCRYPTION_KEY_ID: key1
- * <br>
- * HISS_DEFAULT_ENCRYPTION_ALGORITHM: aes-128-gcm
- * <br>
- * HISS_DEFAULT_HASHING_KEY_ID: key2
- * <br>
- * HISS_DEFAULT_HASHING_ALGORITHM: hmac-sha256
- * </code>
+ * <ul>
+ *     <li>
+ *         <code>keys</code>:
+ *         <ul>
+ *             <li><code>HISS_KEYS_{Key ID}</code>: the base64 encoded representation of the key.</li>
+ *             <li><code>HISS_KEYS_{Key ID}__HASH</code>: the hash of the key.</li>
+ *         </ul>
+ *     </li>
+ *     <li>
+ *         <code>defaultEncryptionKeyId</code>: <code>HISS_DEFAULT_ENCRYPTION_ALGORITHM</code>
+ *     </li>
+ *     <li>
+ *         <code>defaultEncryptionAlgorithm</code>: <code>HISS_DEFAULT_ENCRYPTION_ALGORITHM</code>
+ *     </li>
+ *     <li>
+ *         <code>defaultHashingKeyId</code>: <code>HISS_DEFAULT_HASHING_KEY_ID</code>
+ *     </li>
+ *     <li>
+ *         <code>defaultHashingAlgorithm</code>: <code>HISS_DEFAULT_HASHING_ALGORITHM</code>
+ *     </li>
+ *     <li>
+ *         <code>keyHashGenerationEnabled</code>: <code>HISS_KEY_HASH_GENERATION_ENABLED</code>
+ *     </li>
+ * </ul>
+ *
+ * @see HissProperties
  */
 public class HissPropertiesFromEnvProvider implements HissPropertiesProvider {
 
