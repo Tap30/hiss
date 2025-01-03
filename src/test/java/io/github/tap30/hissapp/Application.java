@@ -1,5 +1,6 @@
 package io.github.tap30.hissapp;
 
+import io.github.tap30.hiss.Encrypted;
 import io.github.tap30.hiss.Hiss;
 import io.github.tap30.hiss.HissFactory;
 import io.github.tap30.hiss.properties.HissProperties;
@@ -7,6 +8,8 @@ import io.github.tap30.hissapp.model.Address;
 import io.github.tap30.hissapp.model.Admin;
 import io.github.tap30.hissapp.model.Secret;
 import io.github.tap30.hissapp.model.User;
+import lombok.Getter;
+import lombok.Setter;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -381,6 +384,28 @@ public class Application {
         assertFalse(hashedText1.contains("12345"));
         assertTrue(hashedText1.startsWith("Your code is "));
         assertTrue(hashedText1.endsWith(". Keep it safe."));
+    }
+
+    @Test
+    void test() {
+        var message = new Message();
+        message.setContent("User 123 called you.");
+
+        hiss.encryptObject(message);
+
+        System.out.println(message.getContent());
+        System.out.println(message.getHashedContent());
+    }
+
+    @Getter
+    @Setter
+    public static class Message {
+
+        @Encrypted(pattern = "\\d+")
+        private String content;
+        private String hashedContent;
+
+        // getters and setters ...
     }
 
 }

@@ -11,7 +11,6 @@ import java.lang.annotation.Target;
 /**
  * Fields annotated using this will be encrypted.
  */
-// Todo: add example
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
 public @interface Encrypted {

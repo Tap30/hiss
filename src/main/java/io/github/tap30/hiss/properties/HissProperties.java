@@ -12,16 +12,39 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+/**
+ * Properties by which an Hiss instance can be created.
+ */
 @Builder
 @Value
 @AllArgsConstructor(access = AccessLevel.PACKAGE)
 public class HissProperties {
 
+    /**
+     * Pairs of key ID (name) to key.
+     */
     Map<String, Key> keys;
+    /**
+     * The key ID of the key by which encryption will be done. It must exist in `keys` map.
+     */
     String defaultEncryptionKeyId;
+    /**
+     * The algorithm name by which encryption will be done.
+     * It must exist among default or custom encryption algorithms.
+     */
     String defaultEncryptionAlgorithm;
+    /**
+     * The key ID of the key by which hashing will be done. It must exist in `keys` map.
+     */
     String defaultHashingKeyId;
+    /**
+     * The algorithm name by which hashing will be done.
+     * It must exist among default or custom hashing algorithms.
+     */
     String defaultHashingAlgorithm;
+    /**
+     * Whether to generate keys' hashes on Hiss instantiation.
+     */
     boolean keyHashGenerationEnabled;
 
     /**
