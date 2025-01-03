@@ -1,7 +1,7 @@
 # Hiss
 
 Hiss is a Java/Kotlin field-level encryption and hashing library
-which lets you encrypt and calculate hash of selected (annotated) fields of an object.
+which lets you encrypt and calculate hash of only selected (annotated) fields of an object.
 
 It is most useful when you want to persist or send an object which has sensitive fields.
 
@@ -158,7 +158,7 @@ All methods in Hiss class are idempotent; meaning calling `encryptObject` twice,
 won't result in encrypting fields twice and as for decryption, plain texts will be left untouched.
 
 There is a [sample application in tests](src/test/java/io/github/tap30/hissapp/Application.java)
-which demonstrates more use case of Hiss.
+which demonstrates more use cases of Hiss.
 
 ## How does Hiss work?
 
